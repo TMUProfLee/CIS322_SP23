@@ -176,6 +176,15 @@ class Player:
 
     return total
 
+  def has_pair(self):
+    values = []
+    for card in self.hand:
+      for value in values:
+        if(card.value == value): 
+          return True
+      values.append(card.value)
+    return False
+
 class Dealer:
   def __init__(self, deck: Deck):
     self.deck = deck
