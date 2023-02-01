@@ -137,7 +137,7 @@ class Player:
   def clearHand(self):
     self.hand = []
     self.knownCards = []
-
+    
   def showValue(self):
     sum = 0
     for card in self.hand:
