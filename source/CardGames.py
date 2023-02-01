@@ -116,6 +116,10 @@ class Player:
     self.hand = []
     self.knownCards = []
 
+  def printMult(self, players):
+    for p in players:
+      p.display()
+    
 class Dealer:
   def __init__(self, deck: Deck):
     self.deck = deck
