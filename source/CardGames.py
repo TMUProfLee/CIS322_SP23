@@ -83,6 +83,11 @@ class Player:
     self.knownCards = []
     self.money = money
 
+  def display(self):
+    print("Player: %s\nMoney: %s\nHand: " % (self.name, self.money))
+    self.showHand(True)
+    print()
+
   def addMoney(self, amount: int):
     self.money += amount
     return self.money
