@@ -121,6 +121,10 @@ class Player:
     self.hand = []
     self.knownCards = []
 
+  def printMult(self, players):
+    for p in players:
+      p.display()
+    
   def has_pair(self):
     values = []
     for card in self.hand:
