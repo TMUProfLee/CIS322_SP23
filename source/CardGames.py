@@ -157,6 +157,15 @@ class Player:
       values.append(card.value)
     return False
 
+  def highest_card(self):
+    highest = 0
+    result_card = None
+    for card in self.hand:
+      if(card.value > highest):
+        highest = card.value
+        result_card = card
+    return result_card
+
 class Dealer:
   def __init__(self, deck: Deck):
     self.deck = deck
