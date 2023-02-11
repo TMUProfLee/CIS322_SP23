@@ -28,7 +28,7 @@ class Card:
       return False
     return self.suit == other.suit and \
       self.value == other.value
-
+  
 class Deck:
   def __init__(self):
     root_dir = os.path.join( find_root_dir(), 'source')
@@ -75,6 +75,13 @@ class Deck:
     self.size -= 1
     self.discarded.append(card)
     return card
+
+  def highestCard(self.values):
+    currenthighest = int(0)
+    for indivValue in list(values):
+        if indivValue > currenthighest:
+            currenthighest = indivValue
+    return currenthighest
 
 class Player:
   def __init__(self, name, money: int = 0):
