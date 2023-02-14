@@ -76,19 +76,17 @@ class Deck:
     self.discarded.append(card)
     return card
 
-  def highestCard(self.values):
-    currenthighest = int(0)
-    for indivValue in list(values):
-        if indivValue > currenthighest:
-            currenthighest = indivValue
-    return currenthighest
-
 class Player:
   def __init__(self, name, money: int = 0):
     self.name = name
     self.hand = []
     self.knownCards = []
     self.money = money
+  
+  def display(self):
+    print("Player name: " + self.name)
+    print("Player money: " + str(self.money))
+    self.showHand(False)
 
   def addMoney(self, amount: int):
     self.money += amount
