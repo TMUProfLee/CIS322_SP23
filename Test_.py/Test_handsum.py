@@ -1,15 +1,26 @@
-def sumHand(hand):
-    handsum = 0
-    for card in hand: 
-    # loops through each card in the hand, identifies it, and then add's its value to handsum
-        if card in ["J","Q","K"]:
-            handsum += 10
-        elif card == "A":
-            handsum += 1
+class Player:
+    def __init__(self):
+        self.cards = ["A","2","3","4","5","6","7","8","9","10","J","Q","K"]
+        self.hand = ["A","2","3","4","5","6","7","8","9","10","J","Q","K"]
+    
+    def value(self, card):
+        if card in self.cards[1:10]:
+            return int(card)
+        elif card in self.cards[10:]:
+            return self.cards.index(card)+1
         else:
-            handsum += int(card)
-    return handsum
+            return 1
 
-def test_answer():
-    assert sumHand(["A","2","3","4","5","6","7","8","9","10","J","Q","K"]) == 85
+########################################### 
+    def sumHand(self):
+        handsum = 0
+        for card in self.hand: 
+            handsum += self.value(card)
+        return handsum
+###########################################
 
+    def test_answer(self):
+        assert Player.sumHand(self) == 91
+
+hand1 = Player()
+Player.test_answer(hand1)
