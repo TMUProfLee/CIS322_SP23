@@ -88,6 +88,11 @@ class Player:
     self.knownCards = []
     self.money = money
 
+  def display(self):
+    print("Player: %s\nMoney: %s\nHand: " % (self.name, self.money))
+    self.showHand(True)
+    print()
+
   def addMoney(self, amount: int):
     self.money += amount
     return self.money
@@ -122,11 +127,34 @@ class Player:
     self.hand = []
     self.knownCards = []
 
+
   def showValue(self):
     sum = 0
     for card in self.hand:
       sum += card.value
     return sum
+    
+  def printMult(self, players):
+    for p in players:
+      p.display()
+    
+  def has_pair(self):
+    values = []
+    for card in self.hand:
+      for value in values:
+        if(card.value == value): 
+          return True
+      values.append(card.value)
+    return False
+
+  def highest_card(self):
+    highest = 0
+    result_card = None
+    for card in self.hand:
+      if(card.value > highest):
+        highest = card.value
+        result_card = card
+    return result_card
 
 class Dealer:
   def __init__(self, deck: Deck):
