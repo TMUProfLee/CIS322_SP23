@@ -20,8 +20,9 @@ class Card:
     self.value = value
     self.image = image
     self.shortImage = []
-    for line in self.image:
-      self.shortImage.append(line[:4])
+    if self.image:
+      for line in self.image:
+        self.shortImage.append(line[:4])
 
   def __eq__(self, other):
     if not type(other) == Card:
@@ -76,6 +77,14 @@ class Deck:
     self.discarded.append(card)
     return card
 
+def getCard( suit, value):
+  deck = Deck()
+  my_card = Card( suit.capitalize(), value, None, None)
+  for card in deck.cards:
+    if card == my_card:
+      return card
+  return None
+
 class Player:
   def __init__(self, name, money: int = 0):
     self.name = name
@@ -101,6 +110,10 @@ class Player:
     else:
       self.knownCards.append(False)
 
+  def setHand(self, cards: "list[Card]", isKnown: bool = False):
+    self.hand = cards
+    self.knownCards = [isKnown for _ in self.hand]
+
   def showHand(self, printShort: bool = False):
     for idx in range(6):
       for i, card in enumerate(self.hand):
@@ -121,7 +134,7 @@ class Dealer:
     self.deck = deck
     self.deck.shuffle()
 
-  def printCards(self, cards: "list[Player]", showFront: bool, printShort: bool = True):
+  def printCards(self, cards: "list[Card]", showFront: bool, printShort: bool = True):
     for idx in range(6):
       for i, card in enumerate(cards):
         if printShort and i < len(cards)-1:
