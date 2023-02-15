@@ -198,6 +198,20 @@ class Player:
     #converts all strings in list into integer
     return sum(integer_list)
 
+  def PairHand(self):
+      pairs = []
+      for i in range(len(self.hand)):
+          for j in range(i + 1, len(self.hand)):
+              if self.hand[i].value == self.hand[j].value:                    
+                if self.hand[i].value not in pairs:
+                  pairs.append(self.hand[i].value)
+      if pairs:
+          print(f"You have a pair of {pairs[0]}'s")
+      else:
+          print("You do not have a pair")         
+      return pairs
+
+
 class Dealer:
   def __init__(self, deck: Deck):
     self.deck = deck
