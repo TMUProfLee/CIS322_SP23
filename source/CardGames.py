@@ -30,6 +30,9 @@ class Card:
     return self.suit == other.suit and \
       self.value == other.value
 
+  
+  
+
 class Deck:
   def __init__(self):
     root_dir = os.path.join( find_root_dir(), 'source')
@@ -123,11 +126,18 @@ class Player:
         else:
           image = card.image[idx] if self.knownCards[i] else card.cardBack[idx]
           print(image, end="")
-      print()
+      print() 
+
 
   def clearHand(self):
     self.hand = []
     self.knownCards = []
+
+  def showValue(self):
+    sum = 0
+    for card in self.hand:
+      sum += card.value
+    return sum
 
 class Dealer:
   def __init__(self, deck: Deck):
