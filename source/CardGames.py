@@ -1,6 +1,7 @@
-
 import random
 import os
+import sys
+sys.path
 
 cardImages = []
 values = list(range(1,14))
@@ -22,6 +23,10 @@ class Card:
     self.shortImage = []
     for line in self.image:
       self.shortImage.append(line[:4])
+    
+  def __str__(self):
+    return f'{self.value}'
+
 
   def __eq__(self, other):
     if not type(other) == Card:
@@ -62,6 +67,8 @@ class Deck:
     self.cardBack = cardBack
     self.discarded = []
 
+  
+
   def reset(self):
     self.cards += self.discarded
     self.discarded = []
@@ -82,6 +89,7 @@ class Player:
     self.hand = []
     self.knownCards = []
     self.money = money
+    
 
   def addMoney(self, amount: int):
     self.money += amount
@@ -102,19 +110,55 @@ class Player:
       self.knownCards.append(False)
 
   def showHand(self, printShort: bool = False):
+    add = []
     for idx in range(6):
       for i, card in enumerate(self.hand):
         if printShort and i < len(self.hand)-1:
           image = card.shortImage[idx]  if self.knownCards[i] else card.cardBack[idx]
+          
           print(image, end="")
         else:
           image = card.image[idx] if self.knownCards[i] else card.cardBack[idx]
           print(image, end="")
+       # print(card)
+        if idx == 0:
+          add.append(str(card))
+        if idx == 5:
+          add = list(map(int, add))
+          
+        
       print()
+    return sum(add)
+      
+      
+      
 
   def clearHand(self):
     self.hand = []
     self.knownCards = []
+  
+  ##MY FUNCTION##
+  def addValues(self):
+    list1 = []
+    #Creates empty list
+    for i in self.hand:
+      #print(i)
+      #gets each value of card that is found in self.hand
+      list1.append(str(i))
+      #appends the value as string to a list
+    integer_list = list(map(int, list1))
+    #converts all strings in list into integer
+    return sum(integer_list)
+
+    #if self.name[-1] == 's':
+      #if the player name ends in S (kinda irrelevant)
+      #return print("\nValue of all cards in %s' hand is" % self.name, sum(integer_list))
+      #sum(integer_list) adds all the values in the players hand
+      
+    
+    #else:
+      #return print("\nValue of all cards in %s's hand is" % self.name, sum(integer_list))
+
 
 class Dealer:
   def __init__(self, deck: Deck):
@@ -143,3 +187,5 @@ class Dealer:
   def resetDeck(self):
     self.deck.reset()
     self.deck.shuffle()
+
+
