@@ -101,6 +101,12 @@ class Player:
     else:
       self.knownCards.append(False)
 
+  def Handsum(self):
+    hand_value = 0
+    for card in self.hand: 
+        hand_value += card.value
+    return hand_value
+
   def showHand(self, printShort: bool = False):
     for idx in range(6):
       for i, card in enumerate(self.hand):
@@ -143,3 +149,15 @@ class Dealer:
   def resetDeck(self):
     self.deck.reset()
     self.deck.shuffle()
+
+# create a player object
+player = Player("Alice", 100)
+my_deck = Deck()
+# add some cards to the player's hand
+player.addCard(Card("Hearts", 13, cardImages[5], cardBack = any))
+player.addCard(Card("Diamonds",2, cardImages[39], cardBack = any))
+player.addCard(Card("Spades", 2, cardImages[0], cardBack = any))
+
+# calculate the sum of the player's hand
+total = player.Handsum()
+print("Player's hand value: ", total)

@@ -19,8 +19,7 @@ class Player:
         return handsum
 ###########################################
 
-    def test_answer(self):
-        assert Player.sumHand(self) == 91
-
-hand1 = Player()
-Player.test_answer(hand1)
+def test_():
+    hand1 = Player()
+    assert hand1.sumHand() == 91
+test_()
