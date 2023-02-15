@@ -154,7 +154,8 @@ class Player:
         else:
           image = card.image[idx] if self.knownCards[i] else card.cardBack[idx]
           print(image, end="")
-      print()
+      print() 
+
 
   def clearHand(self):
     self.hand = []
@@ -224,6 +225,12 @@ class Player:
     for p in players:
       p.display()
     
+  def showValue(self):
+    sum = 0
+    for card in self.hand:
+      sum += card.value
+    return sum
+
 class Dealer:
   def __init__(self, deck: Deck):
     self.deck = deck
