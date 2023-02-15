@@ -111,7 +111,33 @@ class Player:
           image = card.image[idx] if self.knownCards[i] else card.cardBack[idx]
           print(image, end="")
       print()
+  def pairCheck(self):#returns a list of values that appear at least twice in the players hand
+    pairlist=[]
+    aVar1 = 0
+    while aVar1 < len(self.hand) - 1:
+      aVar2 = aVar1 + 1
+      while aVar2 < len(self.hand) :
+        #print(self.hand[aVar1].value,self.hand[aVar2].value)
+        duplicateCheck = False
+        for cardValue in pairlist:
+          if cardValue == self.hand[aVar1].value:
+            duplicateCheck = True
+        if self.hand[aVar1].value == self.hand[aVar2].value and not duplicateCheck :
+          pairlist.append(self.hand[aVar1].value)
+        aVar2 += 1
+      aVar1 += 1
+    return(pairlist)
 
+  def matching(self):
+    report = []
+    pairlist = self.pairCheck()
+    for pairValue in pairlist:
+      matches = 0
+      for aCard in self.hand:
+        if aCard.value == pairValue:
+          matches += 1
+      report.append([pairValue,matches])
+    return report
   def clearHand(self):
     self.hand = []
     self.knownCards = []
