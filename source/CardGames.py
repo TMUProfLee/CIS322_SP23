@@ -3,7 +3,7 @@ import random
 import os
 
 cardImages = []
-values = list(range(1,14))
+values = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
 suits = ["Spades", "Clubs", "Hearts", "Diamonds"]
 
 def find_root_dir():
