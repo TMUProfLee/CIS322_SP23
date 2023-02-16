@@ -156,6 +156,16 @@ class Player:
         result_card = card
     return result_card
 
+  def calculateHand(self):
+    total = self.showValue()
+    for card in self.hand:
+      if(total < 21):
+        break
+      if(card.value == 11): # Ace
+        total -= 10
+
+    return total
+
 class Dealer:
   def __init__(self, deck: Deck):
     self.deck = deck
