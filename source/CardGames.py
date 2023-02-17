@@ -29,7 +29,7 @@ class Card:
       return False
     return self.suit == other.suit and \
       self.value == other.value
-
+  
 class Deck:
   def __init__(self):
     root_dir = os.path.join( find_root_dir(), 'source')
@@ -91,6 +91,11 @@ class Player:
     self.hand = []
     self.knownCards = []
     self.money = money
+  
+  def display(self):
+    print("Player name: " + self.name)
+    print("Player money: " + str(self.money))
+    self.showHand(False)
 
   def addMoney(self, amount: int):
     self.money += amount
