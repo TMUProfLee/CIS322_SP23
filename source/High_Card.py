@@ -121,6 +121,10 @@ class Player:
       l2.append(int(c))
     x = max(l2)
     print(x)
+    
+
+
+
 
   def clearHand(self):
     self.hand = []
