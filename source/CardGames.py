@@ -33,7 +33,8 @@ class Card:
       return False
     return self.suit == other.suit and \
       self.value == other.value
-
+  def __str__(self):
+    return str(self.value)
 class Deck:
   def __init__(self):
     root_dir = os.path.join( find_root_dir(), 'source')
@@ -156,13 +157,20 @@ class Player:
           add.append(str(card))
         if idx == 5:
           add = list(map(int, add))
-          
         
       print()
     return sum(add)
-      
-      
-      
+    
+    
+  def High(self):
+    l =[]
+    l2 =[]
+    for c in self.hand:
+      l.append(str(c))
+    for c in l:
+      l2.append(int(c))
+    x = max(l2)
+    print(x)
 
   def clearHand(self):
     self.hand = []
