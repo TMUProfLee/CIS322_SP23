@@ -170,3 +170,12 @@ class Dealer:
   def resetDeck(self):
     self.deck.reset()
     self.deck.shuffle()
+  
+  def nextTurn(self, player):
+    player.display()
+    draw = input("Enter 'draw' or 'pass': ")
+    if draw == "draw":
+      self.dealCards(1, player)
+      print("Card drawn by %s." % (player))
+    else:
+      print("%s passed." % (player))
