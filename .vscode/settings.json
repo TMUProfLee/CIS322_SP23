@@ -1,4 +1,10 @@
 {
+<<<<<<< HEAD
+=======
+    "python.analysis.extraPaths": [
+        "./source"
+    ],
+>>>>>>> a376fc0dac1a21c199d32fdf3990ec78474c83ed
     "python.testing.pytestArgs": [
         "test"
     ],
