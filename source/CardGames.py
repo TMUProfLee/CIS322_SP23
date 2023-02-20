@@ -115,6 +115,18 @@ class Player:
     else:
       self.knownCards.append(False)
 
+  def handSum(self):
+    handsum = 0
+    aces = 0
+    for card in self.hand:
+      if card.value == 11:
+        aces += 1
+      handsum += card.value
+    while aces > 0 and handsum > 21:
+      aces -= 1
+      handsum -= 10
+    return handsum
+
   def setHand(self, cards: "list[Card]", isKnown: bool = False):
     self.hand = cards
     self.knownCards = [isKnown for _ in self.hand]
