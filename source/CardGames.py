@@ -131,8 +131,13 @@ class Player:
         else:
           image = card.image[idx] if self.knownCards[i] else card.cardBack[idx]
           print(image, end="")
-      print() 
+      print()
 
+  def bust(self):
+    if self.calculateHand() > 21:
+      return True
+    else:
+      return False 
 
   def clearHand(self):
     self.hand = []
