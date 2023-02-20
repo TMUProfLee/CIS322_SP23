@@ -133,7 +133,6 @@ class Player:
           print(image, end="")
       print() 
 
-
   def clearHand(self):
     self.hand = []
     self.knownCards = []
@@ -193,6 +192,12 @@ class Player:
         highest = card.value
         result_card = card
     return result_card
+  
+  def bust(self):
+    if self.calculateHand() > 21:
+      return True
+    else:
+      return False 
 
 class Dealer:
   def __init__(self, deck: Deck):
