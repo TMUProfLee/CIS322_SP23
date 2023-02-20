@@ -1,0 +1,17 @@
+<<<<<<< HEAD
+=======
+{
+<<<<<<< HEAD
+=======
+    "python.analysis.extraPaths": [
+        "./source"
+    ],
+>>>>>>> a376fc0dac1a21c199d32fdf3990ec78474c83ed
+    "python.testing.pytestArgs": [
+        "test"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "python.pythonPath": "/opt/homebrew/bin/python3.11"
+}
+>>>>>>> eac6de33d18afd79a2a3cd1f3a4454380920a030

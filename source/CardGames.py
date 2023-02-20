@@ -131,7 +131,7 @@ class Player:
         else:
           image = card.image[idx] if self.knownCards[i] else card.cardBack[idx]
           print(image, end="")
-      print() 
+      print()
 
   def clearHand(self):
     self.hand = []
