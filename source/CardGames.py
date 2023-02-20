@@ -228,10 +228,17 @@ class Dealer:
     self.deck.shuffle()
 
   def nextTurn(self, player):
-    player.display()
-    draw = input("Enter 'draw' or 'pass': ")
-    if draw == "draw":
-      self.dealCards(1, player)
-      print("Card drawn by %s." % (player))
+    if player.bust() == True:
+      print("%s is bust.\n")
     else:
-      print("%s passed." % (player))
+      player.display()
+      draw = input("Enter 'draw' or 'pass': ")
+      if draw == "draw":
+        self.dealCards(1, player)
+        print("Card drawn by %s." % (player))
+        if player.bust() == True:
+          print("You bust!")
+        else:
+          player.display()
+      else:
+        print("%s passed." % (player))
