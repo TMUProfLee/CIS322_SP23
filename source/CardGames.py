@@ -13,6 +13,27 @@ def find_root_dir():
     cwd = os.path.join( cwd, '..')
   return cwd
 
+def initializeGame():
+  dealer = Dealer()
+  players = []
+  morePlayers = True
+  while morePlayers:
+    anotherPlayer = input("Add another player? (Y/N)")
+    if anotherPlayer == "Y" or "y":
+      newPlayer = input("Enter name of new player: ")
+      players.append(newPlayer)
+    else:
+      morePlayers = False
+  for p in players:
+    p = Player(p)
+  dealer.dealCards(2, players)
+
+  return dealer, players
+
+
+
+
+
 class Card:
   def __init__(self, suit, value, image, cardBack):
     self.cardBack = cardBack
