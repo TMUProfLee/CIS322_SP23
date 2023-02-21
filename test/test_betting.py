@@ -67,4 +67,3 @@ def test_overdrawn():
     assert matt.money == 100
     assert aBox.wager == 0
 
-test_on_a_roll()
