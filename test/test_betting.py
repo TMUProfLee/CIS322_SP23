@@ -61,4 +61,10 @@ def test_broke_bet():
     assert matt.money == 0
     assert aBox.wager == 0
 
+def test_overdrawn():
+    aBox,matt = setup(100)#matt has 100
+    aBox.bet(150,matt)   #matt bets 150
+    assert matt.money == 100
+    assert aBox.wager == 0
+
 test_on_a_roll()
