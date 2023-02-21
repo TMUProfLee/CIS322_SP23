@@ -235,13 +235,13 @@ def Play(dealer: Dealer, players: list):
       draw = input("Enter 'draw' or 'pass': ")
       if draw == "draw" or draw == "Draw":
         dealer.dealCards(1, [player])
-        print("Card drawn by %s." % (player.name))
+        print("Card drawn by %s.\n" % (player.name))
         player.display()
         if player.bust() == True:
-          print("You bust!")
+          print("You bust!\n")
           players.pop(players.index(player))
       else:
-        print("%s passed." % (player.name))
+        print("%s passed.\n" % (player.name))
         players_passed.append(player)
         players.pop(players.index(player))
       input("Next Player press 'Enter' when ready!")
