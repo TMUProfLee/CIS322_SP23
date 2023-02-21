@@ -14,7 +14,8 @@ def find_root_dir():
   return cwd
 
 def initializeGame():
-  dealer = Dealer()
+  deck = Deck()
+  dealer = Dealer(deck)
   players = []
   morePlayers = True
   while morePlayers:
