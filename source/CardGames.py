@@ -242,8 +242,6 @@ class Dealer:
         print(f'{player.name}:')
         player.showHand(True)
         print() 
-
-
 class GoFish:
   def __init__(self, players: "list[Player]"):
     self.playerinfo = []
