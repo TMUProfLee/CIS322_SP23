@@ -17,11 +17,4 @@ dealer.dealCards(5, players)
 for player in players:
     print(f'{player.name}:')
     player.showHand(True)
-    print()
-# checks for pairs and sets
-for player in players:
-    print(f'{player.name}:')
-    for pair in player.pairCheck():
-        print("There is a pair of",str(pair)+"'s")
-    for setlist in player.matching():
-        print("There are",setlist[1],str(setlist[0])+"'s")
+    print(player.handSum())
