@@ -2,7 +2,6 @@ import random
 import os
 import sys
 import time
-sys.path
 
 cardImages = []
 values = list(range(1,14))
@@ -315,3 +314,51 @@ class GoFish:
     self.player_asked = self.playerinfo[self.index(player_asked, self.playerinfo)][0]
 
     self.surrender_card()
+def question():
+  x = input('It is your turn who whould you like to ask? ')
+  y = input('what card would you like to ask that player for?')
+  if x == 'p1':
+    print('pass the computer to p1')
+    print('\n\n\n\n\n\n\n\n\n\n\n\n')
+    time.sleep(10) 
+    print('do you have', y, "?")
+    z = input('do you have one?')
+    if y == 'yes':
+      #give card
+      print('player has card')
+    elif y == 'no':
+      print('Go fish')
+  if x == 'p2':
+    print('pass the computer to p2')
+    print('\n\n\n\n\n\n\n\n\n\n\n\n')
+    time.sleep(10) 
+    print('do you have', y, "?")
+    z = input('do you have one?')
+    if y == 'yes':
+      #give card
+      print('player has card')
+    elif y == 'no':
+      print('Go fish')
+  if x == 'p3':
+    print('pass the computer to p3')
+    print('\n\n\n\n\n\n\n\n\n\n\n\n')
+    time.sleep(10) 
+    print('do you have', y, "?")
+    z = input('do you have one?')
+    if y == 'yes':
+      #give card
+      print('player has card')
+    elif y == 'no':
+      print('Go fish')
+  if x == 'p4':
+    print('pass the computer to p4')
+    print('\n\n\n\n\n\n\n\n\n\n\n\n')
+    time.sleep(10) 
+    print('do you have', y, "?")
+    z = input('do you have one?')
+    if y == 'yes':
+      #give card
+      print('player has card')
+    elif y == 'no':
+      print('Go fish')
+question()
