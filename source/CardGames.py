@@ -16,20 +16,21 @@ def find_root_dir():
 def initializeGame():
   deck = Deck()
   dealer = Dealer(deck)
-  players = []
+  playerNames = []
   morePlayers = True
   while morePlayers:
-    anotherPlayer = input("Add another player? (Y/N)")
-    if anotherPlayer == "Y" or "y":
+    anotherPlayer = input("Add another player? (Y/N): ")
+    if anotherPlayer == "Y" or anotherPlayer == "y":
       newPlayer = input("Enter name of new player: ")
-      players.append(newPlayer)
+      playerNames.append(newPlayer)
     else:
       morePlayers = False
-  for p in players:
-    p = Player(p)
-  dealer.dealCards(2, players)
+  initPlayers = []
+  for p in playerNames:
+    initPlayers.append(Player(p))
+  dealer.dealCards(2, initPlayers)
 
-  return dealer, players
+  return dealer, initPlayers
 
 
 
