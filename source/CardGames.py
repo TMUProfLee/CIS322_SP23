@@ -184,11 +184,11 @@ def dealerHand(dealer, house, player):
     return 1   
   if houseHand == 21 and len(house.hand) == 2: #if blackjack then house auto win
     return -1 
-  while houseHand < 16: #force hit when below 16
+  while houseHand < 17: #force hit when below 17
     dealer.dealCards(1, [house])
     houseHand = house.handSum()
 
-  if playerHand >= 16 and playerHand <= 21: 
+  if playerHand <= 21: 
     while playerHand >= houseHand: # keep hitting until house hand value is bigger than player hand, unless houseHand reach 21
       if playerHand == houseHand and houseHand >=19:
         break
@@ -201,6 +201,7 @@ def dealerHand(dealer, house, player):
     return 0
   if playerHand > houseHand:
     return 1 if playerHand <= 21 else -1
+
   if houseHand > playerHand:
     return -1 if houseHand <= 21 else 1
 

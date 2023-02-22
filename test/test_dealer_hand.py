@@ -106,9 +106,9 @@ def test_tie():
     assert dealerHand(dealer, house, player) == 0
 #check if house get more cards
 def test_house_hitting():
-    #case 1: house is under 16
+    #case 1: house is under 17
     firstCard = getCard("Spades", 10)
-    secondCard = getCard("Spades", 5)
+    secondCard = getCard("Spades", 6)
     cards = [ firstCard, secondCard]
     house.setHand( cards, isKnown=True )
     numCard1 = len(house.hand)
