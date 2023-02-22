@@ -1,4 +1,3 @@
-
 import random
 import os
 
@@ -32,8 +31,11 @@ def initializeGame():
 
   return dealer, initPlayers
 
-
-
+def showWinner(players):
+    arr = {}
+    for player in players:
+      arr[player.calculateHand()] = player
+    return arr[max(arr.keys())].name
 
 
 class Card:
