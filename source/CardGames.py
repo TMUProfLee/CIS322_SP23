@@ -93,8 +93,7 @@ class Player:
     self.money = money
   
   def display(self):
-    print("Player name: " + self.name)
-    print("Player money: " + str(self.money))
+    print("Name: " + self.name + "|| Money: " + str(self.money) + "|| Hand: " + str(self.handSum()))
     self.showHand(False)
 
   def addMoney(self, amount: int):
@@ -146,6 +145,9 @@ class Player:
     self.hand = []
     self.knownCards = []
 
+
+        
+
 class Dealer:
   def __init__(self, deck: Deck):
     self.deck = deck
@@ -173,3 +175,34 @@ class Dealer:
   def resetDeck(self):
     self.deck.reset()
     self.deck.shuffle()
+
+# simple respond for dealer in single player with known hands 
+def dealerHand(dealer, house, player):
+  houseHand = house.handSum()
+  playerHand = player.handSum()
+  if playerHand == 21 and len(player.hand) == 2: #if blackjack then player auto win
+    return 1   
+  if houseHand == 21 and len(house.hand) == 2: #if blackjack then house auto win
+    return -1 
+  while houseHand < 16: #force hit when below 16
+    dealer.dealCards(1, [house])
+    houseHand = house.handSum()
+
+  if playerHand >= 16 and playerHand <= 21: 
+    while playerHand >= houseHand: # keep hitting until house hand value is bigger than player hand, unless houseHand reach 21
+      if playerHand == houseHand and houseHand >=19:
+        break
+      dealer.dealCards(1, [house])
+      houseHand = house.handSum()
+  
+  if playerHand == houseHand:
+    return 0
+  if playerHand > 21 and houseHand > 21:
+    return 0
+  if playerHand > houseHand:
+    return 1 if playerHand <= 21 else -1
+  if houseHand > playerHand:
+    return -1 if houseHand <= 21 else 1
+
+
+
