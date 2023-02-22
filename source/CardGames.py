@@ -203,10 +203,6 @@ class Dealer:
         player.addCard(self.deck.getCard())
     return True
 
-  #def askCard(self, player_turn, player_asked, value, playerDeckinfo, players: "list[Player]"):
-    
-
-
   def resetDeck(self):
     self.deck.reset()
     self.deck.shuffle()
@@ -214,7 +210,6 @@ class Dealer:
 class GoFish:
   def __init__(self, deck: Deck, players: "list[Player]"):
     self.deck = deck
-    self. dealer = dealer
 
   def start_game(self, players):
     deck = Deck()
