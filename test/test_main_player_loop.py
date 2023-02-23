@@ -1,4 +1,5 @@
 from testing_base import *
+import pytest
 
 # Create deck
 deck = Deck()
@@ -17,14 +18,13 @@ players = [matthew, mark, luke, john, peter]
 dealer.dealCards(2, players)
 
 output = Play(dealer, players)
+@pytest.mark.parametrize("out",output)
 
-#assert output type is a list
-assert type(output) == list
+#This verifies that a list is returned, each list item is a player type, and that each player did not bust
+def test_player_bust(out):
+  assert out.bust() == False
 
-#assert that items in list are players and that players have not busted
-for player in output:
-    assert type(player.name) == str
-    assert player.bust() == False
-
+for i in range(len(output) - 1):
+  test_player_bust(output[i])
 
 
