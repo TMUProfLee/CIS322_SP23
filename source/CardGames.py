@@ -208,94 +208,90 @@ class Dealer:
     self.deck.shuffle()
 
 class GoFish:
-  def __init__(self, deck: Deck, players: "list[Player]"):
-    self.deck = deck
+  def __init__(self, players: "list[Player]"):
+    self.playerinfo = []
+    self.players = players
+    self.value_wanted = int
+    self.suit_wanted = ""
+    self.player_asked = []
+    self.player_turn = []
 
-  def start_game(self, players):
+  def start_game(self):
     deck = Deck()
     dealer = Dealer(deck)
-    dealer.dealCards(5, players)
-    for player in players:
+    dealer.dealCards(5, self.players)
+    for player in self.players:
       player.showHand(player.hand)
-  
-  #adds name and deck to a list
-  def create_deckInfo(self, players):
-    playerDeckInfo = []
-    for i in range(len(players)):
-      playerDeckInfo.append([])
-  
-    #player names and deck/hand
-    for i in range(len(players)):
-      playerDeckInfo[i].append(players[i])
-      playerDeckInfo[i].append(players[i].hand)
-    return playerDeckInfo
+    
+  def player_deck_info(self):
+    for i in range(len(self.players)):
+      self.playerinfo.append([])
+    print(self.playerinfo)
 
-  #gets index of name or card wanted
-  def index(self, players, get_player_index):
-    info = GoFish.create_deckInfo(self, players)
-    for i in range(len(GoFish.create_deckInfo(self, players))):
+    for i in range(len(self.players)):
+      self.playerinfo[i].append(self.players[i])
+      self.playerinfo[i].append(self.players[i].hand)
+    return self.playerinfo
+
+  def index(self, player_wanted):
+    info = self.player_deck_info()
+    for i in range(len(info)):
       player = info[i][0]
-      if str(get_player_index) == str(player):
-        index_value = i
-        return info[index_value]
+      if str(player_wanted) == str(player):
+        return i
 
-  #when you have the card 
-  def surrender_card(self, value_wanted, suit_wanted, p_turn, p_asked):
-    list1 = [] 
-    list2 = []
-    counter = 0 
-    #get_val
-    #if value asked for is not in player deck
-    for i in p_asked[1]:
-      print(i.suit)
-      print("(same value:", bool(str(i) == str(value_wanted)),")", "(same suit:",bool(i.suit == suit_wanted),")")
-      if str(i) != str(value_wanted):
+  def surrender_card(self):
+    temp_list1 = []
+    temp_list2 = []
+    counter = 0
+
+    for i in self.player_asked[1]:
+      if str(i) != str(self.value_wanted):
+        counter += 1 
+      elif i.suit != str(self.suit_wanted):
         counter += 1
-      elif i.suit != str(suit_wanted):
-        counter += 1
-      
-    #if it is, it will add that card to the player who asked and remove 
-    #card from player who has to turn it in 
       else:
-        #appends the card 
-        list1.append(p_asked[1][counter])
-        p_turn[0].addCard(list1[0])
-      
-        #pop from player deck to see if they have card
-        #if its not the value the other player asked for
-        #it adds it to a temp list
-        #if it is, it does not add it to the temp list
-
-        for i in range(len(p_asked[1])):
-          a = p_asked[1].pop()
-          #print(i, str(a), str(value_wanted))
-          #print(bool(str(a) == str(value_wanted)), bool(a.suit == suit_wanted))
-          if str(a) != str(value_wanted):
-            list2.append(a)
-          elif a.suit != str(suit_wanted):
-            list2.append(a)
-
-
-        #transfers temp list to the player deck 
-        for i in range(len(list2)):
-          p_asked[1].append(list2[i])
+        temp_list1.append(self.player_asked[1][counter])
+        self.player_turn.addCard(temp_list1[0])
         
-        print(p_asked[1])
-        p_turn[0].showHand()
-        p_asked[0].showHand()
-        return 
+        for i in range(len(self.player_asked[1])):
+          card = self.player_asked.pop()
+          if str(card) != str(self.value_wanted):
+            temp_list2.append(card)
+          elif card.suit != str(self.suit_wanted):
+            temp_list2.append(card)
 
-  def ask_Card(self, value_wanted, suit_wanted, players, player_turn):
-    #player_turn = GoFish.index(self, players, player_turn)
-    player_asked = input("Who do you want to ask?: ")
+        for i in range(len(temp_list2)):
+          self.player_asked.append(temp_list2[i])
+      
+      self.player_turn[0].showHand()
+      self.player_asked[0].showHand()
 
-    value_player_asked = GoFish.index(self, players, player_asked)
-    value_player_turn = GoFish.index(self, players, "Camila")
-    #print(value_player_turn)
 
-    GoFish.surrender_card(self, value_wanted, suit_wanted, value_player_turn, value_player_asked)
+  def ask_card(self, value_wanted, suit_wanted):
+    player_turn = input(str("What is your name? "))
+    player_asked = input(str("Who would like to ask? "))
 
+    self.value_wanted = value_wanted
+    self.suit_wanted = suit_wanted
+
+    index_player_turn = self.index(player_turn)
+    index_player_asked = self.index(player_asked)
+
+    print(index_player_turn)
+
+  
+
+
+          
+      
 
     
 
 
+      
+
+
+
+  
+ 
