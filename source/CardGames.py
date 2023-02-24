@@ -213,8 +213,10 @@ class GoFish:
     self.players = players
     self.value_wanted = int
     self.suit_wanted = ""
-    self.player_asked = []
-    self.player_turn = []
+    self.player_asked = ""
+    self.player_turn = ""
+    self.info_player_turn = int
+    self.info_player_asked = int
 
   def start_game(self):
     deck = Deck()
@@ -226,15 +228,14 @@ class GoFish:
   def player_deck_info(self):
     for i in range(len(self.players)):
       self.playerinfo.append([])
-    print(self.playerinfo)
 
     for i in range(len(self.players)):
       self.playerinfo[i].append(self.players[i])
       self.playerinfo[i].append(self.players[i].hand)
+    #print(self.playerinfo)
     return self.playerinfo
 
-  def index(self, player_wanted):
-    info = self.player_deck_info()
+  def index(self, player_wanted, info):
     for i in range(len(info)):
       player = info[i][0]
       if str(player_wanted) == str(player):
@@ -244,41 +245,50 @@ class GoFish:
     temp_list1 = []
     temp_list2 = []
     counter = 0
-
-    for i in self.player_asked[1]:
+    for i in self.info_player_asked:
+      print(str(i), i.suit)
+      
       if str(i) != str(self.value_wanted):
         counter += 1 
       elif i.suit != str(self.suit_wanted):
         counter += 1
       else:
-        temp_list1.append(self.player_asked[1][counter])
+        temp_list1.append(self.info_player_asked[counter])
         self.player_turn.addCard(temp_list1[0])
         
-        for i in range(len(self.player_asked[1])):
-          card = self.player_asked.pop()
+        for i in range(len(self.info_player_asked)):
+          card = self.info_player_asked.pop()
           if str(card) != str(self.value_wanted):
             temp_list2.append(card)
           elif card.suit != str(self.suit_wanted):
             temp_list2.append(card)
 
         for i in range(len(temp_list2)):
-          self.player_asked.append(temp_list2[i])
+          self.info_player_asked.append(temp_list2[i])
       
-      self.player_turn[0].showHand()
-      self.player_asked[0].showHand()
+    self.player_turn.showHand()
+    self.player_asked.showHand()
 
 
   def ask_card(self, value_wanted, suit_wanted):
+    self.player_deck_info()
     player_turn = input(str("What is your name? "))
     player_asked = input(str("Who would like to ask? "))
 
     self.value_wanted = value_wanted
     self.suit_wanted = suit_wanted
 
-    index_player_turn = self.index(player_turn)
-    index_player_asked = self.index(player_asked)
+    self.info_player_turn = self.playerinfo[self.index(player_turn, self.playerinfo)][1]
+    self.info_player_asked = self.playerinfo[self.index(player_asked, self.playerinfo)][1]
 
-    print(index_player_turn)
+    self.player_turn = self.playerinfo[self.index(player_turn, self.playerinfo)][0]
+    self.player_asked = self.playerinfo[self.index(player_asked, self.playerinfo)][0]
+    
+    
+
+    self.surrender_card()
+
+    #print(index_player_turn)
 
   
 
