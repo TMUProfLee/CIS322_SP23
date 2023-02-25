@@ -265,18 +265,20 @@ class GoFish:
 
         for i in range(len(temp_list2)):
           self.info_player_asked.append(temp_list2[i])
-      
+
+    print(self.player_turn)
     self.player_turn.showHand()
+    print(self.player_asked)
     self.player_asked.showHand()
 
 
-  def ask_card(self, value_wanted, suit_wanted):
+  def ask_card(self):
     self.player_deck_info()
     player_turn = input(str("What is your name? "))
     player_asked = input(str("Who would like to ask? "))
 
-    self.value_wanted = value_wanted
-    self.suit_wanted = suit_wanted
+    self.value_wanted = int(input("What value would you like? "))
+    self.suit_wanted = str(input("What suit would you like? "))
 
     self.info_player_turn = self.playerinfo[self.index(player_turn, self.playerinfo)][1]
     self.info_player_asked = self.playerinfo[self.index(player_asked, self.playerinfo)][1]
