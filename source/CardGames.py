@@ -194,10 +194,8 @@ class Player:
     return result_card
   
   def bust(self):
-    if self.calculateHand() > 21:
-      return True
-    else:
-      return False 
+    return self.calculateHand() > 21
+      
 
 class Dealer:
   def __init__(self, deck: Deck):
