@@ -33,9 +33,10 @@ def initializeGame():
 
 def showWinner(players):
     handTotals = {}
+    handTotals = {}
     for player in players:
       handTotals[player.calculateHand()] = player
-    return '\nWinner: ' + handTotals[max(handTotals.keys())].name
+    return handTotals[max(handTotals.keys())]
 
 
 class Card:
