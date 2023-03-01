@@ -1,5 +1,4 @@
 from testing_base import *
-from source import CardGames
 
 
 # Create a deck to use
@@ -15,7 +14,7 @@ donovan = Player('Donovan')
 players = [matthew, mark, donovan]
 
 # Deal 5 cards to each player
-dealer.dealCards(5, players)
+dealer.dealCards(2, players)
 
 
 
@@ -25,5 +24,5 @@ for player in players:
     print(f'{player.name}:')
     print(f'Hand Value: {player.showValue()}')
     player.showHand(True)
-    print() 
+    print()    
 

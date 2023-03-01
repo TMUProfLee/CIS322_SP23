@@ -1,9 +1,8 @@
-
 import random
 import os
 
 cardImages = []
-values = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
+values = list(range(1,14))
 suits = ["Spades", "Clubs", "Hearts", "Diamonds"]
 
 def find_root_dir():
@@ -13,6 +12,14 @@ def find_root_dir():
     cwd = os.path.join( cwd, '..')
   return cwd
 
+
+def showWinner(players):
+    handTotals = {}
+    for player in players:
+      handTotals[player.calculateHand()] = player
+    return '\nWinner: ' + handTotals[max(handTotals.keys())].name
+
+
 class Card:
   def __init__(self, suit, value, image, cardBack):
     self.cardBack = cardBack
@@ -20,9 +27,8 @@ class Card:
     self.value = value
     self.image = image
     self.shortImage = []
-    if self.image:
-      for line in self.image:
-        self.shortImage.append(line[:4])
+    for line in self.image:
+      self.shortImage.append(line[:4])
 
   def __eq__(self, other):
     if not type(other) == Card:
@@ -74,11 +80,13 @@ class Deck:
   def shuffle(self):
     random.shuffle(self.cards)
 
-  def getCard(self):
-    card = self.cards.pop()
-    self.size -= 1
-    self.discarded.append(card)
-    return card
+  def getCard( suit, value):
+    deck = Deck()
+    my_card = Card( suit.capitalize(), value, None, None)
+    for card in deck.cards:
+      if card == my_card:
+        return card
+    return None  
 
 class Player:
   def __init__(self, name, money: int = 0):
@@ -114,6 +122,7 @@ class Player:
     self.hand = cards
     self.knownCards = [isKnown for _ in self.hand]
 
+
   def showHand(self, printShort: bool = False):
     for idx in range(6):
       for i, card in enumerate(self.hand):
@@ -130,12 +139,51 @@ class Player:
     self.hand = []
     self.knownCards = []
 
+
+  def showValue(self):
+    sum = 0
+    for card in self.hand:
+      sum += card.value
+    return sum
+    
+  def printMult(self, players):
+    for p in players:
+      p.display()
+    
+  def has_pair(self):
+    values = []
+    for card in self.hand:
+      for value in values:
+        if(card.value == value): 
+          return True
+      values.append(card.value)
+    return False
+
+  def highest_card(self):
+    highest = 0
+    result_card = None
+    for card in self.hand:
+      if(card.value > highest):
+        highest = card.value
+        result_card = card
+    return result_card
+
+  def calculateHand(self):
+    total = self.showValue()
+    for card in self.hand:
+      if(total < 21):
+        break
+      if(card.value == 11): # Ace
+        total -= 10
+
+    return total
+
 class Dealer:
   def __init__(self, deck: Deck):
     self.deck = deck
     self.deck.shuffle()
 
-  def printCards(self, cards: "list[Card]", showFront: bool, printShort: bool = True):
+  def printCards(self, cards: "list[Player]", showFront: bool, printShort: bool = True):
     for idx in range(6):
       for i, card in enumerate(cards):
         if printShort and i < len(cards)-1:
@@ -157,3 +205,6 @@ class Dealer:
   def resetDeck(self):
     self.deck.reset()
     self.deck.shuffle()
+
+
+  
