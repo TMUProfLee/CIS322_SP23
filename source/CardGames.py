@@ -3,7 +3,7 @@ import random
 import os
 
 cardImages = []
-values = list(range(1,14))
+values = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
 suits = ["Spades", "Clubs", "Hearts", "Diamonds"]
 
 def find_root_dir():
@@ -20,8 +20,9 @@ class Card:
     self.value = value
     self.image = image
     self.shortImage = []
-    for line in self.image:
-      self.shortImage.append(line[:4])
+    if self.image:
+      for line in self.image:
+        self.shortImage.append(line[:4])
 
   def __eq__(self, other):
     if not type(other) == Card:
@@ -79,8 +80,6 @@ class Deck:
     self.discarded.append(card)
     return card
 
-  
-
 class Player:
   def __init__(self, name, money: int = 0):
     self.name = name
@@ -111,6 +110,10 @@ class Player:
     else:
       self.knownCards.append(False)
 
+  def setHand(self, cards: "list[Card]", isKnown: bool = False):
+    self.hand = cards
+    self.knownCards = [isKnown for _ in self.hand]
+
   def showHand(self, printShort: bool = False):
     for idx in range(6):
       for i, card in enumerate(self.hand):
@@ -127,41 +130,12 @@ class Player:
     self.hand = []
     self.knownCards = []
 
-
-  def showValue(self):
-    sum = 0
-    for card in self.hand:
-      sum += card.value
-    return sum
-    
-  def printMult(self, players):
-    for p in players:
-      p.display()
-    
-  def has_pair(self):
-    values = []
-    for card in self.hand:
-      for value in values:
-        if(card.value == value): 
-          return True
-      values.append(card.value)
-    return False
-
-  def highest_card(self):
-    highest = 0
-    result_card = None
-    for card in self.hand:
-      if(card.value > highest):
-        highest = card.value
-        result_card = card
-    return result_card
-
 class Dealer:
   def __init__(self, deck: Deck):
     self.deck = deck
     self.deck.shuffle()
 
-  def printCards(self, cards: "list[Player]", showFront: bool, printShort: bool = True):
+  def printCards(self, cards: "list[Card]", showFront: bool, printShort: bool = True):
     for idx in range(6):
       for i, card in enumerate(cards):
         if printShort and i < len(cards)-1:
