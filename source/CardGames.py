@@ -131,13 +131,18 @@ class Player:
         else:
           image = card.image[idx] if self.knownCards[i] else card.cardBack[idx]
           print(image, end="")
-      print() 
+      print()
 
+  def bust(self):
+    if self.calculateHand() > 21:
+      return True
+    else:
+      return False 
 
   def clearHand(self):
     self.hand = []
     self.knownCards = []
-
+    
   def showValue(self):
     sum = 0
     for card in self.hand:
@@ -176,6 +181,24 @@ class Player:
 
     return total
 
+  def has_pair(self):
+    values = []
+    for card in self.hand:
+      for value in values:
+        if(card.value == value): 
+          return True
+      values.append(card.value)
+    return False
+
+  def highest_card(self):
+    highest = 0
+    result_card = None
+    for card in self.hand:
+      if(card.value > highest):
+        highest = card.value
+        result_card = card
+    return result_card
+
 class Dealer:
   def __init__(self, deck: Deck):
     self.deck = deck
@@ -203,3 +226,23 @@ class Dealer:
   def resetDeck(self):
     self.deck.reset()
     self.deck.shuffle()
+
+def Play(dealer: Dealer, players: list):
+  players_passed = []
+  while len(players) > 0:
+    for player in players:
+      player.display()
+      draw = input("Enter 'draw' or 'pass': ")
+      if draw == "draw" or draw == "Draw":
+        dealer.dealCards(1, [player])
+        print("Card drawn by %s.\n" % (player.name))
+        player.display()
+        if player.bust() == True:
+          print("You bust!\n")
+          players.pop(players.index(player))
+      else:
+        print("%s passed.\n" % (player.name))
+        players_passed.append(player)
+        players.pop(players.index(player))
+      input("Next Player press 'Enter' when ready!")
+  return players_passed
