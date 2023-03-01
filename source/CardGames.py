@@ -129,6 +129,17 @@ class Player:
     self.hand = cards
     self.knownCards = [isKnown for _ in self.hand]
 
+  #function
+  def MatchFour(self):
+    for i in range(len(self.hand)):
+      for j in range(i + 1, len(self.hand)):
+        for k in range(j + 1, len(self.hand)):
+          for l in range(k + 1, len(self.hand)):
+            if self.hand[i].value == self.hand[j].value == self.hand[k].value == self.hand[l].value:
+              print("You have a set of %ss!" % self.hand[i].value)
+              return True
+    return False
+
   def showHand(self, printShort: bool = False):
     add = []
     for idx in range(6):
