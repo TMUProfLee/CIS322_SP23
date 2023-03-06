@@ -84,6 +84,31 @@ def getCard( suit, value):
     if card == my_card:
       return card
   return None
+class betting_box:
+  def __init__(self, money: int = 0):
+    self.wager = money
+    self.betters= []
+
+  def bet(self, bet, player: bool = False):
+    if player:
+      self.betters.append(player)
+    for aBetter in self.betters:
+      if aBetter.money >= bet:
+        aBetter.makeBet(bet)
+        self.wager += bet
+      else:
+        print(f'{aBetter.name} bet {bet} but only has {aBetter.money}')
+
+  def collect(self, win, odds: int = 2):
+    if win == -1:
+      pass
+    elif win == 1:
+      for aBetter in self.betters:
+        aBetter.addMoney(self.wager*odds/len(self.betters))
+    else:
+      for aBetter in self.betters:
+        aBetter.addMoney(self.wager/len(self.betters))
+    self.wager=0
 
 class Player:
   def __init__(self, name, money: int = 0):
