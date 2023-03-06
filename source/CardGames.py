@@ -208,6 +208,14 @@ class Dealer:
     self.deck.reset()
     self.deck.shuffle()
 
+  def printHands(self, players: dict):
+    # Show each player's hand
+    for player in players.values():
+        print(f'{player.name}:')
+        player.showHand(True)
+        print() 
+
+
 class GoFish:
   def __init__(self, players: "list[Player]"):
     self.playerinfo = []
