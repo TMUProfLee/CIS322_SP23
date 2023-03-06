@@ -1,20 +1,26 @@
 from testing_base import *
 
-# Create a deck to use
+# Create deck and dealer
 deck = Deck()
-# Create a dealer
 dealer = Dealer(deck)
 
-# Create players for your game
-matthew = Player('Matthew')
-mark = Player('Mark')
-players = [matthew, mark]
+# Create players
+players = {}
+while True:
+    try:
+        NumPlayers = int(input("Enter player count: "))
+        break
+    except ValueError:
+        print("Please enter number of players: ")
+for i in range(1, NumPlayers+1):
+    name = input("Player {} name: ".format(i))
+    players[name] = Player(name)
 
 # Deal 5 cards to each player
-dealer.dealCards(5, players)
+dealer.dealCards(5, list(players.values()))
 
 # Show each player's hand
-for player in players:
+for player in players.values():
     print(f'{player.name}:')
     player.showHand(True)
     print()
