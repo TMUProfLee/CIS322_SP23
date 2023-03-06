@@ -16,6 +16,5 @@ def test_checkHandSum(user, case, cards):
 
       print('Test Passed') if user.showValue() == case else print ('Test Failed')
 
-
 test_checkHandSum(donovan, caseVal, deck)
 
