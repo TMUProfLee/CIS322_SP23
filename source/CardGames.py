@@ -28,9 +28,6 @@ class Card:
   def __str__(self):
     return f'{self.value}'
 
-  
-
-
   def __eq__(self, other):
     if not type(other) == Card:
       return False
@@ -69,8 +66,6 @@ class Deck:
     self.size = len(deck)
     self.cardBack = cardBack
     self.discarded = []
-
-  
 
   def reset(self):
     self.cards += self.discarded
@@ -176,8 +171,6 @@ class Player:
     integer_list = list(map(int, list1))
     #converts all strings in list into integer
     return sum(integer_list)
-
-
 
 class Dealer:
   def __init__(self, deck: Deck):
@@ -285,25 +278,5 @@ class GoFish:
 
     self.player_turn = self.playerinfo[self.index(player_turn, self.playerinfo)][0]
     self.player_asked = self.playerinfo[self.index(player_asked, self.playerinfo)][0]
-    
-    
 
     self.surrender_card()
-
-    #print(index_player_turn)
-
-  
-
-
-          
-      
-
-    
-
-
-      
-
-
-
-  
- 
