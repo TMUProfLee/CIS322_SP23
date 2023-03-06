@@ -1,4 +1,3 @@
-
 import random
 import os
 
@@ -32,8 +31,11 @@ def initializeGame():
 
   return dealer, initPlayers
 
-
-
+def showWinner(players):
+    arr = {}
+    for player in players:
+      arr[player.calculateHand()] = player
+    return arr[max(arr.keys())].name
 
 
 class Card:
@@ -154,7 +156,8 @@ class Player:
         else:
           image = card.image[idx] if self.knownCards[i] else card.cardBack[idx]
           print(image, end="")
-      print()
+      print() 
+
 
   def clearHand(self):
     self.hand = []
@@ -219,11 +222,29 @@ class Player:
   def bust(self):
     return self.calculateHand() > 21
 
+  def printMult(self, players):
+    for p in players:
+      p.display()
+    
+  def showValue(self):
+    sum = 0
+    for card in self.hand:
+      sum += card.value
+    return sum
 
   def printMult(self, players):
     for p in players:
       p.display()
     
+  def has_pair(self):
+    values = []
+    for card in self.hand:
+      for value in values:
+        if(card.value == value): 
+          return True
+      values.append(card.value)
+    return False
+
 class Dealer:
   def __init__(self, deck: Deck):
     self.deck = deck
