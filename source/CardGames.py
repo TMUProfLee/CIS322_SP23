@@ -89,6 +89,14 @@ def getCard( suit, value):
       return card
   return None
 
+####################################################################################
+def count_cards(deck):
+  #How many cards are in the deck assigned to "num_cards"
+  num_cards = len(deck)
+  #For each iteration the number of cars in the deck decrease by 1 card
+  for i in range(num_cards):
+    print("There are "+ str(num_cards - i) +" more cards in the deck")
+#####################################################################################
 class Player:
   def __init__(self, name, money: int = 0):
     self.name = name
@@ -199,6 +207,14 @@ class Dealer:
   def resetDeck(self):
     self.deck.reset()
     self.deck.shuffle()
+
+  def printHands(self, players: dict):
+    # Show each player's hand
+    for player in players.values():
+        print(f'{player.name}:')
+        player.showHand(True)
+        print() 
+
 
 class GoFish:
   def __init__(self, players: "list[Player]"):
