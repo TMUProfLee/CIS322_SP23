@@ -1,6 +1,8 @@
-
 import random
 import os
+import sys
+import time
+sys.path
 
 cardImages = []
 values = list(range(1,14))
@@ -20,9 +22,11 @@ class Card:
     self.value = value
     self.image = image
     self.shortImage = []
-    if self.image:
-      for line in self.image:
-        self.shortImage.append(line[:4])
+    for line in self.image:
+      self.shortImage.append(line[:4])
+    
+  def __str__(self):
+    return f'{self.value}'
 
   def __eq__(self, other):
     if not type(other) == Card:
@@ -91,6 +95,9 @@ class Player:
     self.hand = []
     self.knownCards = []
     self.money = money
+    
+  def __str__(self):
+    return (str(self.name))
 
   def addMoney(self, amount: int):
     self.money += amount
@@ -115,19 +122,55 @@ class Player:
     self.knownCards = [isKnown for _ in self.hand]
 
   def showHand(self, printShort: bool = False):
+    add = []
     for idx in range(6):
       for i, card in enumerate(self.hand):
         if printShort and i < len(self.hand)-1:
           image = card.shortImage[idx]  if self.knownCards[i] else card.cardBack[idx]
+          
           print(image, end="")
         else:
           image = card.image[idx] if self.knownCards[i] else card.cardBack[idx]
           print(image, end="")
+       # print(card)
+        if idx == 0:
+          add.append(str(card))
+        if idx == 5:
+          add = list(map(int, add))
+          
+        
       print()
+    return sum(add)
+      
+      
+      
 
   def clearHand(self):
     self.hand = []
     self.knownCards = []
+  
+  ##MY FUNCTION##
+
+  def printHand(self):
+    list1 = []
+    for i in self.hand:
+      list1.append(str(i))
+    return list(map(int, list1))
+
+  def get_playerHand(self):
+    print()
+
+  def addValues(self):
+    list1 = []
+    #Creates empty list
+    for i in self.hand:
+      #print(i)
+      #gets each value of card that is found in self.hand
+      list1.append(str(i))
+      #appends the value as string to a list
+    integer_list = list(map(int, list1))
+    #converts all strings in list into integer
+    return sum(integer_list)
 
 class Dealer:
   def __init__(self, deck: Deck):
@@ -156,3 +199,84 @@ class Dealer:
   def resetDeck(self):
     self.deck.reset()
     self.deck.shuffle()
+
+class GoFish:
+  def __init__(self, players: "list[Player]"):
+    self.playerinfo = []
+    self.players = players
+    self.value_wanted = int
+    self.suit_wanted = ""
+    self.player_asked = ""
+    self.player_turn = ""
+    self.info_player_turn = int
+    self.info_player_asked = int
+
+  def start_game(self):
+    deck = Deck()
+    dealer = Dealer(deck)
+    dealer.dealCards(5, self.players)
+    for player in self.players:
+      player.showHand(player.hand)
+    
+  def player_deck_info(self):
+    for i in range(len(self.players)):
+      self.playerinfo.append([])
+
+    for i in range(len(self.players)):
+      self.playerinfo[i].append(self.players[i])
+      self.playerinfo[i].append(self.players[i].hand)
+    #print(self.playerinfo)
+    return self.playerinfo
+
+  def index(self, player_wanted, info):
+    for i in range(len(info)):
+      player = info[i][0]
+      if str(player_wanted) == str(player):
+        return i
+
+  def surrender_card(self):
+    temp_list1 = []
+    temp_list2 = []
+    counter = 0
+    for i in self.info_player_asked:
+      print(str(i), i.suit)
+      
+      if str(i) != str(self.value_wanted):
+        counter += 1 
+      elif i.suit != str(self.suit_wanted):
+        counter += 1
+      else:
+        temp_list1.append(self.info_player_asked[counter])
+        self.player_turn.addCard(temp_list1[0])
+        
+        for i in range(len(self.info_player_asked)):
+          card = self.info_player_asked.pop()
+          if str(card) != str(self.value_wanted):
+            temp_list2.append(card)
+          elif card.suit != str(self.suit_wanted):
+            temp_list2.append(card)
+
+        for i in range(len(temp_list2)):
+          self.info_player_asked.append(temp_list2[i])
+
+    print(self.player_turn)
+    self.player_turn.showHand()
+    print(self.player_asked)
+    self.player_asked.showHand()
+
+
+  def ask_card(self):
+    self.player_deck_info()
+    player_turn = input(str("What is your name? "))
+    player_asked = input(str("Who would like to ask? "))
+
+    self.value_wanted = int(input("What value would you like? "))
+    self.suit_wanted = str(input("What suit would you like? "))
+
+    self.info_player_turn = self.playerinfo[self.index(player_turn, self.playerinfo)][1]
+    self.info_player_asked = self.playerinfo[self.index(player_asked, self.playerinfo)][1]
+
+    self.player_turn = self.playerinfo[self.index(player_turn, self.playerinfo)][0]
+    self.player_asked = self.playerinfo[self.index(player_asked, self.playerinfo)][0]
+
+    self.surrender_card()
