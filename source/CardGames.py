@@ -3,7 +3,7 @@ import random
 import os
 
 cardImages = []
-values = [11,2,3,4,5,6,7,8,9,10,10,10,10]
+values = [11,2,3,4,5,6,7,8,9,10,10,10,10] # blackjack card values
 suits = ["Spades", "Clubs", "Hearts", "Diamonds"]
 
 def find_root_dir():
@@ -77,7 +77,7 @@ class Deck:
     self.discarded.append(card)
     return card
 
-def getCard( suit, value):
+def getCard(suit, value):
   deck = Deck()
   my_card = Card( suit.capitalize(), value, None, None)
   for card in deck.cards:
@@ -140,6 +140,7 @@ class Player:
       self.knownCards.append(False)
 
   def handSum(self):
+    """Sums together the hand and adjusts the sum depending on the best value of an ace (11 or 1)"""
     handsum = 0
     aces = 0
     for card in self.hand:
