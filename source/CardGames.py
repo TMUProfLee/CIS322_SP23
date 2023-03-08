@@ -1,6 +1,8 @@
 import random
 import os
 
+from pytest import MonkeyPatch
+
 cardImages = []
 values = list(range(1,14))
 suits = ["Spades", "Clubs", "Hearts", "Diamonds"]
@@ -264,3 +266,14 @@ def Play(dealer: Dealer, players: list, pot: Pot):
         players.pop(players.index(player))
       input("Next Player press 'Enter' when ready!")
   return players_passed
+
+class Pot:
+  def __init__(self, money):
+    self.money = money
+
+  def addPot(self, amount):
+    self.money += amount
+
+  def rewardPot(self, player):
+    player.addMoney(self.money)
+    self.money = 0
