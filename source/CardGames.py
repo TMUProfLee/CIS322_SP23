@@ -275,11 +275,11 @@ class Pot:
     self.money += amount
 
   def addPot(self, amount, player):
-    player.makeBet(amount)
     if(player.money >= amount):
       self.money += amount
     else:
       print("Error: %s attempted to bet more than they have" % player.name)
+    player.makeBet(amount)
 
   def rewardPot(self, player):
     player.addMoney(self.money)
