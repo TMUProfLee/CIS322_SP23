@@ -224,6 +224,22 @@ class GoFish:
     dealer.dealCards(5, self.players)
     for player in self.players:
       player.showHand(player.hand)
+
+  def game_over(self):
+    j = 0
+    gm = ["G", "A", "M", "E", "O", "V", "E","R"]
+    for i in range(20):
+      print(" "*j, ".")
+      j += 3
+      if i == 10:
+        for i in range (len(gm)):
+          print(" "*j, gm[i])
+          j += 3
+
+    sys.exit()
+    
+
+
     
   def player_deck_info(self):
     for i in range(len(self.players)):
@@ -232,7 +248,6 @@ class GoFish:
     for i in range(len(self.players)):
       self.playerinfo[i].append(self.players[i])
       self.playerinfo[i].append(self.players[i].hand)
-    #print(self.playerinfo)
     return self.playerinfo
 
   def index(self, player_wanted, info):
@@ -243,41 +258,35 @@ class GoFish:
 
   def surrender_card(self):
     temp_list1 = []
-    temp_list2 = []
     counter = 0
     for i in self.info_player_asked:
-      print(str(i), i.suit)
-      
       if str(i) != str(self.value_wanted):
         counter += 1 
-      elif i.suit != str(self.suit_wanted):
-        counter += 1
       else:
         temp_list1.append(self.info_player_asked[counter])
         self.player_turn.addCard(temp_list1[0])
+        del self.info_player_asked[counter]
+        if len(self.info_player_asked) == 0:
+          self.game_over()
         
-        for i in range(len(self.info_player_asked)):
-          card = self.info_player_asked.pop()
-          if str(card) != str(self.value_wanted):
-            temp_list2.append(card)
-          elif card.suit != str(self.suit_wanted):
-            temp_list2.append(card)
 
-        for i in range(len(temp_list2)):
-          self.info_player_asked.append(temp_list2[i])
-      
+    
+    
+        
+
+    print(self.player_turn)
     self.player_turn.showHand()
+    print(self.player_asked)
     self.player_asked.showHand()
 
 
-  def ask_card(self, value_wanted, suit_wanted):
+  def ask_card(self):
     self.player_deck_info()
     player_turn = input(str("What is your name? "))
     player_asked = input(str("Who would like to ask? "))
 
-    self.value_wanted = value_wanted
-    self.suit_wanted = suit_wanted
-
+    self.value_wanted = int(input("What value would you like? "))
+  
     self.info_player_turn = self.playerinfo[self.index(player_turn, self.playerinfo)][1]
     self.info_player_asked = self.playerinfo[self.index(player_asked, self.playerinfo)][1]
 
@@ -285,10 +294,8 @@ class GoFish:
     self.player_asked = self.playerinfo[self.index(player_asked, self.playerinfo)][0]
     
     
-
     self.surrender_card()
 
-    #print(index_player_turn)
 
   
 
