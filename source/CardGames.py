@@ -184,8 +184,6 @@ class Player:
   def clearHand(self):
     self.hand = []
     self.knownCards = []
-  
-  ##MY FUNCTION##
 
   def printHand(self):
     list1 = []
@@ -198,14 +196,9 @@ class Player:
 
   def addValues(self):
     list1 = []
-    #Creates empty list
     for i in self.hand:
-      #print(i)
-      #gets each value of card that is found in self.hand
       list1.append(str(i))
-      #appends the value as string to a list
     integer_list = list(map(int, list1))
-    #converts all strings in list into integer
     return sum(integer_list)
 
 class Dealer:
@@ -326,7 +319,24 @@ class GoFish:
     for player in self.players:
       print("\n",player)
       player.showHand(player.hand)
-    
+
+  def check_if_empty(self):
+    if len(self.info_player_asked) == 0:
+          self.game_over()
+
+  def game_over(self):
+    j = 0
+    gm = ["G", "A", "M", "E", "O", "V", "E","R"]
+    for i in range(20):
+      print(" "*j, ".")
+      j += 3
+      if i == 10:
+        for i in range (len(gm)):
+          print(" "*j, gm[i])
+          j += 3
+
+    sys.exit()
+
   def player_deck_info(self):
     for i in range(len(self.players)):
       self.playerinfo.append([])
@@ -334,7 +344,6 @@ class GoFish:
     for i in range(len(self.players)):
       self.playerinfo[i].append(self.players[i])
       self.playerinfo[i].append(self.players[i].hand)
-    #print(self.playerinfo)
     return self.playerinfo
 
   def index(self, player_wanted, info):
@@ -345,15 +354,13 @@ class GoFish:
 
   def surrender_card(self):
     temp_list1 = []
-    temp_list2 = []
     counter = 0
+
+    self.check_if_empty()
+
     for i in self.info_player_asked:
-      print(str(i), i.suit)
-      
       if str(i) != str(self.value_wanted):
         counter += 1 
-      elif i.suit != str(self.suit_wanted):
-        counter += 1
       else:
         temp_list1.append(self.info_player_asked[counter])
         self.player_turn.addCard(temp_list1[0])
@@ -368,11 +375,13 @@ class GoFish:
         for i in range(len(temp_list2)):
           self.info_player_asked.append(temp_list2[i])
 
-    print(self.player_turn)
-    self.player_turn.showHand()
-    print(self.player_asked)
-    self.player_asked.showHand()
+        del self.info_player_asked[counter]
+        self.check_if_empty()
 
+    print("\n", self.player_turn)
+    self.player_turn.showHand()
+    print("\n", self.player_asked)
+    self.player_asked.showHand()
 
   def ask_card(self):
     self.player_deck_info()
@@ -385,10 +394,14 @@ class GoFish:
     self.info_player_turn = self.playerinfo[self.index(player_turn, self.playerinfo)][1]
     self.info_player_asked = self.playerinfo[self.index(player_asked, self.playerinfo)][1]
 
+    self.check_if_empty()
+
+    self.value_wanted = int(input("What value would you like? "))
     self.player_turn = self.playerinfo[self.index(player_turn, self.playerinfo)][0]
     self.player_asked = self.playerinfo[self.index(player_asked, self.playerinfo)][0]
 
     self.surrender_card()
+    
 def question():
   x = input('It is your turn who whould you like to ask? ')
   y = input('what card would you like to ask that player for?')
