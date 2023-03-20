@@ -1,4 +1,3 @@
-
 import random
 import os
 
@@ -12,7 +11,7 @@ def find_root_dir():
     os.chdir('..')
     cwd = os.path.join( cwd, '..')
   return cwd
-
+######################################################################################################################
 class Card:
   def __init__(self, suit, value, image, cardBack):
     self.cardBack = cardBack
@@ -29,7 +28,7 @@ class Card:
       return False
     return self.suit == other.suit and \
       self.value == other.value
-  
+#######################################################################################################################
 class Deck:
   def __init__(self):
     root_dir = os.path.join( find_root_dir(), 'source')
@@ -84,10 +83,11 @@ def getCard(suit, value):
     if card == my_card:
       return card
   return None
-class betting_box:
-  def __init__(self, money: int = 0):
+#######################################################################################################################
+class Betting_box:
+  def __init__(self, money: int = 0, betters = []):
     self.wager = money
-    self.betters= []
+    self.betters = betters
 
   def bet(self, bet, player: bool = False):
     if player:
@@ -100,22 +100,22 @@ class betting_box:
         print(f'{aBetter.name} bet {bet} but only has {aBetter.money}')
 
   def collect(self, win, odds: int = 2):
-    if win == -1:
+    if win == 1:
       pass
-    elif win == 1:
+    elif win == 2:
       for aBetter in self.betters:
         aBetter.addMoney(self.wager*odds/len(self.betters))
     else:
       for aBetter in self.betters:
         aBetter.addMoney(self.wager/len(self.betters))
     self.wager=0
-
+####################################################################################################################
 class Player:
   def __init__(self, name, money: int = 0):
     self.name = name
     self.hand = []
     self.knownCards = []
-    self.money = money
+    self.money = int(money)
   
   def display(self):
     print("Name: " + self.name + "|| Money: " + str(self.money) + "|| Hand: " + str(self.handSum()))
@@ -127,8 +127,8 @@ class Player:
 
   def makeBet(self, amount: int):
     if amount > self.money:
-      print("%s does not have enough money to make this bet." % self.name)
-      return self.money
+      print(f"{self.name} has {self.money} dollars. This is not enough to make this bet.")
+      return False
     self.money -= amount
     return self.money
 
@@ -166,6 +166,7 @@ class Player:
           image = card.image[idx] if self.knownCards[i] else card.cardBack[idx]
           print(image, end="")
       print()
+
   def pairCheck(self):#returns a list of values that appear at least twice in the players hand
     pairlist=[]
     aVar1 = 0
@@ -174,16 +175,18 @@ class Player:
       while aVar2 < len(self.hand) :
         #print(self.hand[aVar1].value,self.hand[aVar2].value)
         duplicateCheck = False
+        #If the cardvalue is already in the pairlist, take note and set duplicate check to True
         for cardValue in pairlist:
           if cardValue == self.hand[aVar1].value:
             duplicateCheck = True
+        #If the cardvalues match and are not already in the parilist then add them
         if self.hand[aVar1].value == self.hand[aVar2].value and not duplicateCheck :
           pairlist.append(self.hand[aVar1].value)
         aVar2 += 1
       aVar1 += 1
     return(pairlist)
 
-  def matching(self):
+  def matching(self):# returns a list of cards and the amount of pairs of each card in the player's hand
     report = []
     pairlist = self.pairCheck()
     for pairValue in pairlist:
@@ -191,15 +194,16 @@ class Player:
       for aCard in self.hand:
         if aCard.value == pairValue:
           matches += 1
-      report.append([pairValue,matches])
+      # Checks to see if the card has a match, if not then disregard the card without a match
+      if matches % 2 != 0:
+        matches -= 1
+      report.append([pairValue,matches/2])
     return report
+  
   def clearHand(self):
     self.hand = []
     self.knownCards = []
-
-
-        
-
+##################################################################################################################
 class Dealer:
   def __init__(self, deck: Deck):
     self.deck = deck
@@ -228,34 +232,150 @@ class Dealer:
     self.deck.reset()
     self.deck.shuffle()
 
-# simple respond for dealer in single player with known hands 
-def dealerHand(dealer, house, player):
-  houseHand = house.handSum()
-  playerHand = player.handSum()
-  if playerHand == 21 and len(player.hand) == 2: #if blackjack then player auto win
-    return 1   
-  if houseHand == 21 and len(house.hand) == 2: #if blackjack then house auto win
-    return -1 
-  while houseHand < 17: #force hit when below 17
-    dealer.dealCards(1, [house])
+  def blackjackChecker(self, house, player):
     houseHand = house.handSum()
-
-  if playerHand <= 21: 
-    while playerHand >= houseHand: # keep hitting until house hand value is bigger than player hand, unless houseHand reach 21
-      if playerHand == houseHand and houseHand >=19:
-        break
+    playerHand = player.handSum()
+    player_outcome = 0
+    house_outcome = 0
+    if playerHand == 21 and len(player.hand) == 2: #if the player has blackjack then set their outcome to be the inverse of the house
+      player_outcome = 2   
+    if houseHand == 21 and len(house.hand) == 2: #if the house has blackjack then set their outcome to be the inverse of the player
+      house_outcome = 1 
+    outcome = player_outcome + house_outcome
+    if outcome == 0:
+      return 0
+    elif outcome == 3:
+      return 3
+    elif outcome == 2:
+      return 2
+    else:
+      return 1
+    
+  # simple respond for dealer in single player with known hands 
+  def dealerHand(self, house):
+    houseHand = house.handSum()
+    
+    while houseHand < 17: #force hit when below 17
       dealer.dealCards(1, [house])
       houseHand = house.handSum()
+    
+  def bustCheck(self, player):
+    if player.handSum() > 21:
+        return True
   
-  if playerHand == houseHand:
-    return 0
-  if playerHand > 21 and houseHand > 21:
-    return 0
-  if playerHand > houseHand:
-    return 1 if playerHand <= 21 else -1
+  def winnnerCheck(self, house, player):
+    houseHand = house.handSum()
+    playerHand = player.handSum()
 
-  if houseHand > playerHand:
-    return -1 if houseHand <= 21 else 1
+    if playerHand == houseHand and playerHand <= 21:
+      return -1
+    
+    elif playerHand > 21 and houseHand > 21:
+      return 0
+    
+    elif playerHand > houseHand:
+      return 1 if playerHand > 21 else 2
+    
+    else:
+      return 1 if houseHand <= 21 else 2
+#####################################################################################################################
+"""Initializations"""
+deck = Deck()
+deck.shuffle
 
+dealer = Dealer(deck)
 
+player_name = input("Username: ")
+player_name = Player(player_name)
+player_name.addMoney(500)
+house = Player("house")
 
+betting = True
+
+while betting:
+    
+    """Player Bet"""
+    if player_name.money == 0:
+      "You lost all your money gambeling ;( . . . . Come back later when you get more! :)"
+      break
+    bet = int(input("How much would you like to bet? "))
+    while player_name.makeBet(bet) == False:
+      bet = int(input("\nHow much would you like to bet? "))
+  
+    betting_box = Betting_box(bet, [player_name])
+
+    """Give both the house and the player 2 cards to start the game"""
+    dealer.dealCards(2, [player_name, house])
+    print("\nYour Hand: ", player_name.handSum())  
+    player_name.showHand()
+    print("\nDealer's Hand: ", house.handSum())
+    house.showHand()
+
+    """check to see if someone has blackjack"""
+    blackjackOutcome = dealer.blackjackChecker(house, player_name)
+    if blackjackOutcome == 1:
+      print("The house has blackjack. You lose!")
+      betting_box.collect(blackjackOutcome)
+      print(f"You now have ${player_name.money}")
+    elif blackjackOutcome == 2:
+      print("Blackjack! You win!")
+      betting_box.collect(blackjackOutcome)
+      print(f"You now have ${player_name.money}")
+    elif blackjackOutcome == 3:
+      print("It's a push! You both have blackjack.")
+      betting_box.collect(blackjackOutcome)
+      print(f"You now have ${player_name.money}")
+      
+    else:
+      """while the player doesn't bust, allow them to choose to hit or pass"""
+      bust = False
+      while not bust:
+        hit_stand = input("\nhit or stand? ")
+        if hit_stand == "hit":
+          dealer.dealCards(1,[player_name])
+          print("\nYour Hand: ", player_name.handSum())  
+          player_name.showHand()
+          if dealer.bustCheck(player_name) == True:
+            print("\nBust!")
+            bust = True
+        else:
+          break
+      
+      """After the player is done, let the house complete its turn"""
+      handChangeDetector = house.handSum()
+      dealer.dealerHand(house)
+      print("\nDealer's Hand: ", house.handSum())
+      if dealer.bustCheck(house) == True:
+        print("\nBust!")
+      if house.handSum() == handChangeDetector:
+        pass
+      else:
+        house.showHand()
+      
+      """Compare house and player's hands to see who wins. Then handle win/loss interaction."""
+      print("\n")
+      winner = dealer.winnnerCheck(house, player_name)
+      if winner == 2:
+        print("You won!")
+        betting_box.collect(winner)
+        print(f"You now have ${player_name.money}")
+      elif winner == 1:
+        print("You lost. The dealer won!")
+        betting_box.collect(winner)
+        print(f"You now have ${player_name.money}")
+      else:
+        print("It's a push!")
+        betting_box.collect(winner)
+        print(f"You now have ${player_name.money}")
+
+    """"Clear hands and ask if they want to play again"""
+    start = input("\nWould you like to play again (y/n)? ")
+    if start == "y":
+      house.clearHand()
+      player_name.clearHand()
+    else:
+      break
+
+    """Make sure the deck has enough cards in it"""
+    if deck.size <= 26:
+      deck.reset()
