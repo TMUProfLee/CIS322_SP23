@@ -1,5 +1,6 @@
 import random
 import os
+from source.pot_file import Pot
 
 cardImages = []
 values = list(range(1,14))
@@ -315,7 +316,18 @@ class Dealer:
     self.deck.reset()
     self.deck.shuffle()
 
-def Play(dealer: Dealer, players: list):
+def Play(dealer: Dealer, players: list, pot: Pot):
+  #Players make bets after they are dealt their cards
+  for player in players:
+    player.display()
+    current_money = player.money
+    bet = 0
+    while current_money == player.money and player.money > 0:
+      bet = input("Place Your Bet!\nAmount: ")
+      player.makeBet(bet)
+    pot.addPot(bet)
+  
+  #Main game loop
   players_passed = []
   while len(players) > 0:
     for player in players:
