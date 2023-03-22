@@ -385,11 +385,21 @@ def player_ages(players):
     print("{} goes first!\n".format(youngestPlayer.name))
     return [p for p, _ in playerAge]
 
-def playerTurn(players, current_player, getCard):
-    num_players = len(players)
-    if getCard == True:
-        return current_player
-    else:
-        next_player_index = (players.index(current_player) + 1) % num_players
-        next_player = players[next_player_index]
-        return next_player
+def playerTurn(players: list, current_player: str, getCard: bool) -> None:
+  """Determines which player's turn it is
+
+  Args:
+      players (list): list of players in order
+      current_player (str): name of current player
+      getCard (bool): received card from deck
+
+  Returns:
+      None
+  """
+  num_players = len(players)
+  if getCard == False:
+      return current_player
+  else:
+      next_player_index = (players.index(current_player) + 1) % num_players
+      next_player = players[next_player_index]
+      return next_player
