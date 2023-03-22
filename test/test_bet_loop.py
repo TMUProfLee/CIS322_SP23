@@ -20,7 +20,28 @@ dealer.dealCards(2, players)
 for player in players:
     player.addMoney(100)
 
-# create Pot
-pot = Pot(0)
+# display player money before betting
+print("=======================")
+print("Totals before betting:")
+for player in players:
+    print(player.name, player.money)
 
-Play(dealer, players, pot)
+# create and display Pot
+pot = Pot(0)
+print("Pot total before betting:")
+print(pot.money)
+print("=======================")
+
+# run game
+output = Play(dealer, players, pot)
+
+# display player money after betting
+print("=======================")
+print("Totals after betting:")
+for player in output:
+    print(player.name, player.money)
+
+# display Pot after betting
+print("Pot total after betting:")
+print(pot.money)
+print("=======================")

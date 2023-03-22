@@ -100,13 +100,11 @@ class Deck:
   def shuffle(self):
     random.shuffle(self.cards)
 
-  def getCard( suit, value):
-    deck = Deck()
-    my_card = Card( suit.capitalize(), value, None, None)
-    for card in deck.cards:
-      if card == my_card:
-        return card
-    return None  
+  def getCard(self):
+    card = self.cards.pop()
+    self.size -= 1
+    self.discarded.append(card)
+    return card
 
 def getCard( suit, value):
   deck = Deck()
@@ -150,7 +148,6 @@ class Player:
     self.hand = cards
     self.knownCards = [isKnown for _ in self.hand]
 
-
   def showHand(self, printShort: bool = False):
     for idx in range(6):
       for i, card in enumerate(self.hand):
@@ -162,29 +159,9 @@ class Player:
           print(image, end="")
       print() 
 
-
   def clearHand(self):
     self.hand = []
     self.knownCards = []
-    
-  def showValue(self):
-    sum = 0
-    for card in self.hand:
-      sum += card.value
-    return sum
-
-  def printMult(self, players):
-    for p in players:
-      p.display()
-    
-  def has_pair(self):
-    values = []
-    for card in self.hand:
-      for value in values:
-        if(card.value == value): 
-          return True
-      values.append(card.value)
-    return False
 
   def highest_card(self):
     highest = 0
@@ -195,16 +172,6 @@ class Player:
         result_card = card
     return result_card
 
-  def calculateHand(self):
-    total = self.showValue()
-    for card in self.hand:
-      if(total < 21):
-        break
-      if(card.value == 11): # Ace
-        total -= 10
-
-    return total
-
   def has_pair(self):
     values = []
     for card in self.hand:
@@ -213,23 +180,10 @@ class Player:
           return True
       values.append(card.value)
     return False
-
-  def highest_card(self):
-    highest = 0
-    result_card = None
-    for card in self.hand:
-      if(card.value > highest):
-        highest = card.value
-        result_card = card
-    return result_card
 
   def bust(self):
     return self.calculateHand() > 21
-
-  def printMult(self, players):
-    for p in players:
-      p.display()
-    
+  
   def showValue(self):
     sum = 0
     for card in self.hand:
@@ -239,44 +193,6 @@ class Player:
   def printMult(self, players):
     for p in players:
       p.display()
-    
-  def has_pair(self):
-    values = []
-    for card in self.hand:
-      for value in values:
-        if(card.value == value): 
-          return True
-      values.append(card.value)
-    return False
-
-
-  def showValue(self):
-    sum = 0
-    for card in self.hand:
-      sum += card.value
-    return sum
-    
-  def printMult(self, players):
-    for p in players:
-      p.display()
-    
-  def has_pair(self):
-    values = []
-    for card in self.hand:
-      for value in values:
-        if(card.value == value): 
-          return True
-      values.append(card.value)
-    return False
-
-  def highest_card(self):
-    highest = 0
-    result_card = None
-    for card in self.hand:
-      if(card.value > highest):
-        highest = card.value
-        result_card = card
-    return result_card
 
   def calculateHand(self):
     total = self.showValue()
@@ -323,9 +239,12 @@ def Play(dealer: Dealer, players: list, pot: Pot):
     current_money = player.money
     bet = 0
     while current_money == player.money and player.money > 0:
-      bet = input("Place Your Bet!\nAmount: ")
+      bet = int(input("Place Your Bet!\nAmount: "))
+      if bet == 0:
+        break
       player.makeBet(bet)
     pot.addPot(bet)
+    print("\n")
   
   #Main game loop
   players_passed = []
