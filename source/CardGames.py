@@ -30,7 +30,7 @@ class Card:
       self.value == other.value
 #######################################################################################################################
 class Deck:
-  def __init__(self):
+  def __init__(self,deck_count=1):
     root_dir = os.path.join( find_root_dir(), 'source')
     cards_file = f'{root_dir}{os.path.sep}playing_cards.txt'
     with open(cards_file, "r") as cards:
@@ -49,14 +49,14 @@ class Deck:
         card.append(line.replace("\n",""))
         level += 1
       cardImages.append(card)
-    
     deck = []
-    index = 0
-    for suit in suits:
-      for value in values:
-        deck.append(Card(suit, value, cardImages[index], cardBack))
-        index += 1
-    
+    while deck_count > 0:
+      index = 0
+      for suit in suits:
+        for value in values:
+          deck.append(Card(suit, value, cardImages[index], cardBack))
+          index += 1
+      deck_count -= 1
     self.cards = deck
     self.size = len(deck)
     self.cardBack = cardBack
@@ -222,7 +222,7 @@ class Dealer:
 
   def dealCards(self, numCards: int, players: "list[Player]"):
     if numCards * len(players) > self.deck.size:
-      return False
+      self.resetDeck()
     for player in players:
       for _ in range(numCards):
         player.addCard(self.deck.getCard())
@@ -280,12 +280,38 @@ class Dealer:
       return 1 if houseHand <= 21 else 2
 #####################################################################################################################
 """Initializations"""
-deck = Deck()
+
+player_name = input("Username: ")
+
+partition = player_name.find(";")
+if partition > 0:
+  config = player_name[partition:]
+  player_name = player_name[0:partition]
+###
+deck_num = 1
+for_money = True
+early_shuffle = False
+###
+i=0
+label = ""
+while i < len(config):
+  if config[i] == ";":
+    label =""
+  else:
+    label = label + config[i]
+  i += 1
+  
+  if label == "free":
+    for_money = False
+  if label == "four":
+    deck_num = 4
+  if label == "shuffle":
+    early_shuffle = True
+
+deck = Deck(deck_num)
 deck.shuffle
 
 dealer = Dealer(deck)
-
-player_name = input("Username: ")
 player_name = Player(player_name)
 player_name.addMoney(500)
 house = Player("house")
@@ -294,13 +320,16 @@ betting = True
 
 while betting:
     
-    """Player Bet"""
-    if player_name.money == 0:
-      "You lost all your money gambeling ;( . . . . Come back later when you get more! :)"
-      break
-    bet = int(input("How much would you like to bet? "))
-    while player_name.makeBet(bet) == False:
-      bet = int(input("\nHow much would you like to bet? "))
+    if for_money:
+      """Player Bet"""
+      if player_name.money == 0:
+        "You lost all your money gambeling ;( . . . . Come back later when you get more! :)"
+        break
+      bet = int(input("How much would you like to bet? "))
+      while player_name.makeBet(bet) == False:
+        bet = int(input("\nHow much would you like to bet? "))
+    else:
+      bet=0
   
     betting_box = Betting_box(bet, [player_name])
 
@@ -329,7 +358,7 @@ while betting:
     else:
       """while the player doesn't bust, allow them to choose to hit or pass"""
       bust = False
-      while not bust:
+      while not bust :
         hit_stand = input("\nhit or stand? ")
         if hit_stand == "hit":
           dealer.dealCards(1,[player_name])
@@ -369,13 +398,13 @@ while betting:
         print(f"You now have ${player_name.money}")
 
     """"Clear hands and ask if they want to play again"""
+    print("Cards remaining in deck:", deck.size)
     start = input("\nWould you like to play again (y/n)? ")
-    if start == "y":
+    if start == "n":
+      betting = False
+    else:
       house.clearHand()
       player_name.clearHand()
-    else:
-      break
 
-    """Make sure the deck has enough cards in it"""
-    if deck.size <= 26:
-      deck.reset()
+    if deck.size <=52 and early_shuffle:
+      dealer.resetDeck()
