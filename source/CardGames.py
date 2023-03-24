@@ -15,8 +15,10 @@ def find_root_dir():
 def initializeGame():
   deck = Deck()
   dealer = Dealer(deck)
+  pot = Pot(0)
   playerNames = []
   morePlayers = True
+  buyIn = int(input("Enter buy-in ammount: "))
   while morePlayers:
     anotherPlayer = input("Add another player? (Y/N): ")
     if anotherPlayer == "Y" or anotherPlayer == "y":
@@ -24,12 +26,13 @@ def initializeGame():
       playerNames.append(newPlayer)
     else:
       morePlayers = False
-  initPlayers = []
+  pot.addPot(buyIn * len(playerNames))
+  pot.printPot()
+  initPlayers = [] 
   for p in playerNames:
     initPlayers.append(Player(p))
   dealer.dealCards(2, initPlayers)
-
-  return dealer, initPlayers
+  return dealer, initPlayers, pot
 
 def showWinner(players):
     handTotals = {}
@@ -38,6 +41,13 @@ def showWinner(players):
       handTotals[player.calculateHand()] = player
     return handTotals[max(handTotals.keys())]
 
+class Pot:
+     def __init__(self, money):
+         self.money = money
+     def addPot(self, amount):
+         self.money += amount
+     def printPot(self):
+         print(self.money)
 
 class Card:
   def __init__(self, suit, value, image, cardBack):
