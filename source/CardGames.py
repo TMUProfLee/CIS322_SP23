@@ -56,8 +56,6 @@ class Card:
       self.value == other.value
 
   
-  
-
 class Deck:
   def __init__(self):
     root_dir = os.path.join( find_root_dir(), 'source')
@@ -156,7 +154,7 @@ class Player:
         else:
           image = card.image[idx] if self.knownCards[i] else card.cardBack[idx]
           print(image, end="")
-      print() 
+      print()
 
   def clearHand(self):
     self.hand = []
@@ -202,6 +200,28 @@ class Player:
         total -= 10
 
     return total
+
+  def has_pair(self):
+    values = []
+    for card in self.hand:
+      for value in values:
+        if(card.value == value): 
+          return True
+      values.append(card.value)
+    return False
+
+  def highest_card(self):
+    highest = 0
+    result_card = None
+    for card in self.hand:
+      if(card.value > highest):
+        highest = card.value
+        result_card = card
+    return result_card
+
+  def bust(self):
+    return self.calculateHand() > 21
+
 
 class Dealer:
   def __init__(self, deck: Deck):
