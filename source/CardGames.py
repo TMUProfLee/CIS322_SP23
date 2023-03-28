@@ -98,6 +98,9 @@ def count_cards(deck):
   #For each iteration the number of cars in the deck decrease by 1 card
   for i in range(num_cards):
     print("There are "+ str(num_cards - i) +" more cards in the deck")
+#when the deck reaches 0, then the game is over
+  if num_cards == 0:
+      print("The deck is now empty. Game over, Thanks for playing!")
 #####################################################################################
 class Player:
   def __init__(self, name, money: int = 0):
