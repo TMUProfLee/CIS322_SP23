@@ -23,7 +23,7 @@ def test_next_player_turn():
     playerTurn()
 
     # Assertion
-    assert player == players[1]
+    assert player == players[1] 
 
 
 
