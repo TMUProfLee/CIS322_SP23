@@ -15,8 +15,10 @@ def find_root_dir():
 def initializeGame():
   deck = Deck()
   dealer = Dealer(deck)
+  pot = Pot(0)
   playerNames = []
   morePlayers = True
+  buyIn = int(input("Enter buy-in ammount: "))
   while morePlayers:
     anotherPlayer = input("Add another player? (Y/N): ")
     if anotherPlayer == "Y" or anotherPlayer == "y":
@@ -24,12 +26,13 @@ def initializeGame():
       playerNames.append(newPlayer)
     else:
       morePlayers = False
-  initPlayers = []
+  pot.addPot(buyIn * len(playerNames))
+  pot.printPot()
+  initPlayers = [] 
   for p in playerNames:
     initPlayers.append(Player(p))
   dealer.dealCards(2, initPlayers)
-
-  return dealer, initPlayers
+  return dealer, initPlayers, pot
 
 def showWinner(players):
     handTotals = {}
@@ -37,7 +40,6 @@ def showWinner(players):
     for player in players:
       handTotals[player.calculateHand()] = player
     return handTotals[max(handTotals.keys())]
-
 
 class Card:
   def __init__(self, suit, value, image, cardBack):
@@ -251,6 +253,24 @@ class Dealer:
     self.deck.reset()
     self.deck.shuffle()
 
+class Pot:
+  def __init__(self, money):
+    self.money = money
+
+  def addPot(self, amount):
+    self.money += amount
+
+  def addPot(self, amount, player):
+    if(player.money >= amount):
+      self.money += amount
+    else:
+      print("Error: %s attempted to bet more than they have" % player.name)
+    player.makeBet(amount)
+
+  def rewardPot(self, player):
+    player.addMoney(self.money)
+    self.money = 0
+
 def Play(dealer: Dealer, players: list, pot: Pot):
   #Players make bets after they are dealt their cards
   for player in players:
@@ -285,23 +305,6 @@ def Play(dealer: Dealer, players: list, pot: Pot):
       input("Next Player press 'Enter' when ready!")
   return players_passed
 
-class Pot:
-  def __init__(self, money):
-    self.money = money
-
-  def addPot(self, amount):
-    self.money += amount
-
-  def addPot(self, amount, player):
-    if(player.money >= amount):
-      self.money += amount
-    else:
-      print("Error: %s attempted to bet more than they have" % player.name)
-    player.makeBet(amount)
-
-  def rewardPot(self, player):
-    player.addMoney(self.money)
-    self.money = 0
 def showWinner(players):
     handTotals = {}
     for player in players:
