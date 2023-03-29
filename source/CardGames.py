@@ -30,7 +30,7 @@ class Card:
       self.value == other.value
 #######################################################################################################################
 class Deck:
-  def __init__(self,deck_count=1):
+  def __init__(self,deck_count=1):#by default the number of deck is one
     root_dir = os.path.join( find_root_dir(), 'source')
     cards_file = f'{root_dir}{os.path.sep}playing_cards.txt'
     with open(cards_file, "r") as cards:
