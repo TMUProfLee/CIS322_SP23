@@ -6,9 +6,17 @@ def test_leaderboard():
     jesse = Player('Jesse')
     players = [donovan, jesse]
 
-    for p in players: 
-        for i in range(6):
-            p.addCard(Card("Hearts", random.randint(1, 10), [], []))
+    
+    
+    donovan.addCard(Card("Hearts", (5), [], []))
+    donovan.addCard(Card("Hearts", (4), [], []))
+    donovan.addCard(Card("Clubs", (3), [], []))
+
+    jesse.addCard(Card("Hearts", (2), [], []))
+    jesse.addCard(Card("Spades", (3), [], []))
+    jesse.addCard(Card("Diamonds", (3), [], []))
+
+
 
     for p in players:
         print(p.showValue(), p.name)
