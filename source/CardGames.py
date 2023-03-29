@@ -302,3 +302,24 @@ class Pot:
   def rewardPot(self, player):
     player.addMoney(self.money)
     self.money = 0
+def showWinner(players):
+    handTotals = {}
+    for player in players:
+      handTotals[player.calculateHand()] = player
+    winner = handTotals[max(handTotals.keys())] 
+    return winner
+
+wins = {}
+
+def updateLeaderboard(winner):
+    global wins
+    if winner not in wins:
+      wins[winner] = 1
+    else:
+      wins[winner] += 1
+    
+def showLeaderboard(wins):
+    leaderboard = "\nLEADERBOARD:\n"
+    for winner in wins:
+      leaderboard += f"{winner.name}: {wins[winner]} wins\n"
+    print(leaderboard)
