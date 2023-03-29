@@ -1,6 +1,5 @@
 import random
 import os
-from source.pot_file import Pot
 
 cardImages = []
 values = list(range(1,14))
