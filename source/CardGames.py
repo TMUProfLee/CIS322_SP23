@@ -284,6 +284,7 @@ class Dealer:
 player_name = input("Username: ")
 
 partition = player_name.find(";")
+config=""
 if partition > 0:
   config = player_name[partition:]
   player_name = player_name[0:partition]
