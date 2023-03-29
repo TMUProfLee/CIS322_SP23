@@ -1,8 +1,6 @@
 import random
 import os
 
-from pytest import MonkeyPatch
-
 cardImages = []
 values = list(range(1,14))
 suits = ["Spades", "Clubs", "Hearts", "Diamonds"]
