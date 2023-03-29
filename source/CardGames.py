@@ -2,7 +2,7 @@ import random
 import os
 
 cardImages = []
-values = list(range(1,14))
+values = [11,2,3,4,5,6,7,8,9,10,10,10]
 suits = ["Spades", "Clubs", "Hearts", "Diamonds"]
 
 def find_root_dir():
@@ -202,27 +202,6 @@ class Player:
         total -= 10
 
     return total
-
-  def has_pair(self):
-    values = []
-    for card in self.hand:
-      for value in values:
-        if(card.value == value): 
-          return True
-      values.append(card.value)
-    return False
-
-  def highest_card(self):
-    highest = 0
-    result_card = None
-    for card in self.hand:
-      if(card.value > highest):
-        highest = card.value
-        result_card = card
-    return result_card
-
-  def bust(self):
-    return self.calculateHand() > 21
 
 
 class Dealer:
