@@ -41,14 +41,6 @@ def showWinner(players):
       handTotals[player.calculateHand()] = player
     return handTotals[max(handTotals.keys())]
 
-class Pot:
-     def __init__(self, money):
-         self.money = money
-     def addPot(self, amount):
-         self.money += amount
-     def printPot(self):
-         print(self.money)
-
 class Card:
   def __init__(self, suit, value, image, cardBack):
     self.cardBack = cardBack
@@ -241,6 +233,24 @@ class Dealer:
     self.deck.reset()
     self.deck.shuffle()
 
+class Pot:
+  def __init__(self, money):
+    self.money = money
+
+  def addPot(self, amount):
+    self.money += amount
+
+  def addPot(self, amount, player):
+    if(player.money >= amount):
+      self.money += amount
+    else:
+      print("Error: %s attempted to bet more than they have" % player.name)
+    player.makeBet(amount)
+
+  def rewardPot(self, player):
+    player.addMoney(self.money)
+    self.money = 0
+
 def Play(dealer: Dealer, players: list, pot: Pot):
   #Players make bets after they are dealt their cards
   for player in players:
@@ -274,21 +284,4 @@ def Play(dealer: Dealer, players: list, pot: Pot):
         players.pop(players.index(player))
       input("Next Player press 'Enter' when ready!")
   return players_passed
-
-class Pot:
-  def __init__(self, money):
-    self.money = money
-
-  def addPot(self, amount):
-    self.money += amount
-
-  def addPot(self, amount, player):
-    if(player.money >= amount):
-      self.money += amount
-    else:
-      print("Error: %s attempted to bet more than they have" % player.name)
-    player.makeBet(amount)
-
-  def rewardPot(self, player):
-    player.addMoney(self.money)
-    self.money = 0
+  
