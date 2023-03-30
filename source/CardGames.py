@@ -246,6 +246,7 @@ def initializeGame():
 
 def Play(dealer: Dealer, players: list, pot: Pot):
   #Players make bets after they are dealt their cards
+  print("===========================\nSTART BETS\n===========================")
   for player in players:
     player.display()
     current_money = player.money
@@ -256,7 +257,8 @@ def Play(dealer: Dealer, players: list, pot: Pot):
         break
       player.makeBet(bet)
     pot.addPot(bet)
-    print()
+    print("\n")
+  print("===========================\nEND BETS\n===========================\n")
   
   #Main game loop
   players_passed = []
