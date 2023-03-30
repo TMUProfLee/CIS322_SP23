@@ -2,7 +2,7 @@ import random
 import os
 
 cardImages = []
-values = [11,2,3,4,5,6,7,8,9,10,10,10]
+values = [11,2,3,4,5,6,7,8,9,10,10,10,10]
 suits = ["Spades", "Clubs", "Hearts", "Diamonds"]
 
 def find_root_dir():
@@ -12,34 +12,6 @@ def find_root_dir():
     cwd = os.path.join( cwd, '..')
   return cwd
 
-def initializeGame():
-  deck = Deck()
-  dealer = Dealer(deck)
-  pot = Pot(0)
-  playerNames = []
-  morePlayers = True
-  buyIn = int(input("Enter buy-in ammount: "))
-  while morePlayers:
-    anotherPlayer = input("Add another player? (Y/N): ")
-    if anotherPlayer == "Y" or anotherPlayer == "y":
-      newPlayer = input("Enter name of new player: ")
-      playerNames.append(newPlayer)
-    else:
-      morePlayers = False
-  pot.addPot(buyIn * len(playerNames))
-  pot.printPot()
-  initPlayers = [] 
-  for p in playerNames:
-    initPlayers.append(Player(p))
-  dealer.dealCards(2, initPlayers)
-  return dealer, initPlayers, pot
-
-def showWinner(players):
-    handTotals = {}
-    handTotals = {}
-    for player in players:
-      handTotals[player.calculateHand()] = player
-    return handTotals[max(handTotals.keys())]
 
 class Card:
   def __init__(self, suit, value, image, cardBack):
@@ -113,6 +85,7 @@ def getCard( suit, value):
       return card
   return None
 
+
 class Player:
   def __init__(self, name, money: int = 0):
     self.name = name
@@ -121,7 +94,7 @@ class Player:
     self.money = money
 
   def display(self):
-    print("Player: %s\nMoney: %s\nHand: " % (self.name, self.money))
+    print("Player: %s\nMoney: %s\nHand: %s" % (self.name, self.money, str(self.calculateHand())))
     self.showHand(True)
     print()
 
@@ -232,6 +205,7 @@ class Dealer:
     self.deck.reset()
     self.deck.shuffle()
 
+
 class Pot:
   def __init__(self, money):
     self.money = money
@@ -239,16 +213,36 @@ class Pot:
   def addPot(self, amount):
     self.money += amount
 
-  def addPot(self, amount, player):
-    if(player.money >= amount):
-      self.money += amount
-    else:
-      print("Error: %s attempted to bet more than they have" % player.name)
-    player.makeBet(amount)
-
   def rewardPot(self, player):
     player.addMoney(self.money)
     self.money = 0
+
+
+def initializeGame():
+  deck = Deck()
+  dealer = Dealer(deck)
+  pot = Pot(0)
+  playerNames = []
+  morePlayers = True
+  buyIn = int(input("Enter buy-in amount: "))
+  print()
+  while morePlayers:
+    anotherPlayer = input("Add another player? (Y/N): ")
+    if anotherPlayer == "Y" or anotherPlayer == "y":
+      newPlayer = input("Enter name of new player: ")
+      playerNames.append(newPlayer)
+      print()
+    else:
+      morePlayers = False
+      print()
+  print("Current Pot: " + str(pot.money))
+  initPlayers = [] 
+  for p in playerNames:
+    initPlayers.append(Player(p))
+  dealer.dealCards(2, initPlayers)
+  for player in initPlayers:
+    player.money += buyIn
+  return [dealer, initPlayers, pot]
 
 def Play(dealer: Dealer, players: list, pot: Pot):
   #Players make bets after they are dealt their cards
@@ -262,7 +256,7 @@ def Play(dealer: Dealer, players: list, pot: Pot):
         break
       player.makeBet(bet)
     pot.addPot(bet)
-    print("\n")
+    print()
   
   #Main game loop
   players_passed = []
@@ -292,7 +286,6 @@ def showWinner(players):
     return winner
 
 wins = {}
-
 def updateLeaderboard(winner):
     global wins
     if winner not in wins:
@@ -305,3 +298,7 @@ def showLeaderboard(wins):
     for winner in wins:
       leaderboard += f"{winner.name}: {wins[winner]} wins\n"
     print(leaderboard)
+
+params = initializeGame()
+updateLeaderboard(showWinner(Play(params[0], params[1], params[2])))
+showLeaderboard(wins)
