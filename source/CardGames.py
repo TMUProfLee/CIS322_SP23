@@ -253,6 +253,8 @@ class Pot:
 def checkIfEasterEgg(player):
   for c in player.hand:
     if(c.suit == "Hearts" and c.value == 11): #ace of hearts
+      import webbrowser
+      webbrowser.open('https://www.youtube.com/watch?v=V-_O7nl0Ii0')
       return True
   return False
 
