@@ -2,7 +2,7 @@ import random
 import os
 
 cardImages = []
-values = [11,2,3,4,5,6,7,8,9,10,10,10]
+values = [11,2,3,4,5,6,7,8,9,10,10,10,10]
 suits = ["Spades", "Clubs", "Hearts", "Diamonds"]
 
 def find_root_dir():
@@ -250,6 +250,12 @@ class Pot:
     player.addMoney(self.money)
     self.money = 0
 
+def checkIfEasterEgg(player):
+  for c in player.hand:
+    if(c.suit == "Hearts" and c.value == 11): #ace of hearts
+      return True
+  return False
+
 def Play(dealer: Dealer, players: list, pot: Pot):
   #Players make bets after they are dealt their cards
   for player in players:
@@ -274,6 +280,7 @@ def Play(dealer: Dealer, players: list, pot: Pot):
         dealer.dealCards(1, [player])
         print("Card drawn by %s.\n" % (player.name))
         player.display()
+        checkIfEasterEgg(player)
         if player.bust() == True:
           print("You bust!\n")
           players.pop(players.index(player))
