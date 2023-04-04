@@ -20,7 +20,8 @@ def test_showWinner():
     
     # Test that the winner is correct using assert
     if winner == donovan:
-        assert winner.getName() == 'Donovan'
+        assert winner.name == 'Donovan'
     elif winner == jesse:
-        assert winner.getName() == 'Jesse'
-    print (winner)
+        assert winner.name == 'Jesse'
+    
+    print(f"Winner: {winner.name}")

@@ -1,7 +1,7 @@
 # CIS322_SP23
-
 The Master's University - CIS322 - Spring 2023
-Jesse Bennett
-Roy Garrett
+Justyn Lee
 Donovan Hale
-Jonathan Blankinship
+Jonny Blankinship
+Roy Garrett
+Jesse Bennett

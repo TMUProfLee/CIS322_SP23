@@ -24,5 +24,10 @@ for player in players:
     print(f'{player.name}:')
     print(f'Hand Value: {player.showValue()}')
     player.showHand(True)
-    print()    
+    print()
+
+winner = showWinner(players)
+
+print(winner)
+ 
 

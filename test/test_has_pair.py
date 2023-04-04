@@ -23,3 +23,4 @@ def test_all_cards():
     # we now have all 52 cards, has to have pair
     dealer.dealCards(50, [matthew])
     assert matthew.has_pair() == True
+
