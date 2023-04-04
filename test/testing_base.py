@@ -1,4 +1,4 @@
 import sys
-sys.path.append('/Users/zacharywilson/CIS322_SP23/')
+sys.path.append("../")
 
 from source.CardGames import *
