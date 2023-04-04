@@ -1,0 +1,26 @@
+from testing_base import *
+
+# Create a deck to use
+deck = Deck()
+# Create a dealer
+dealer = Dealer(deck)
+
+# Create players for your game
+player = Player('Matthew')
+
+# Deal 5 cards to each player
+dealer.dealCards(5, [player])
+
+# Show each player's hand
+print(f'{player.name}:')
+player.showHand(True)
+print(player.handSum())
+
+print(len(deck.cards))
+for card in deck.cards:
+    print(card.suit,card.value)
+print("----"*5)
+dealer.printCards(deck,True)
+print("----"*5)
+for card in deck.discarded:
+    print(card.suit,card.value)
