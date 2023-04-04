@@ -242,8 +242,6 @@ class Dealer:
         print(f'{player.name}:')
         player.showHand(True)
         print() 
-
-
 class GoFish:
   def __init__(self, players: "list[Player]"):
     self.playerinfo = []
@@ -372,3 +370,36 @@ def question():
     elif y == 'no':
       print('Go fish')
 question()
+def player_ages(players):
+    playerAge = []
+    for player in players.values():
+        while True:
+            try:
+                age = int(input("Enter {}'s age: ".format(player.name)))
+                playerAge.append((player, age))
+                break
+            except ValueError:
+                print("Please enter a valid age: ")
+    playerAge = sorted(playerAge, key=lambda x: x[1])
+    youngestPlayer = playerAge[0][0]
+    print("{} goes first!\n".format(youngestPlayer.name))
+    return [p for p, _ in playerAge]
+
+def playerTurn(players: list, current_player: str, getCard: bool) -> None:
+  """Determines which player's turn it is
+
+  Args:
+      players (list): list of players in order
+      current_player (str): name of current player
+      getCard (bool): received card from deck
+
+  Returns:
+      None
+  """
+  num_players = len(players)
+  if getCard == False:
+      return current_player
+  else:
+      next_player_index = (players.index(current_player) + 1) % num_players
+      next_player = players[next_player_index]
+      return next_player
