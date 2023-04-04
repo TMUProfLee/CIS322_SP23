@@ -26,10 +26,10 @@ def test_leaderboard():
     print ('Winner: %s' %(winner.name))
     
     
-    updateLeaderboard(winner)
+    updateLeaderboard(winner.name)
 
-    showLeaderboard(wins)
+    showLeaderboard()
  
 test_leaderboard()
-test_leaderboard()
+
     

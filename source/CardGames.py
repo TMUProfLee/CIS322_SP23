@@ -34,13 +34,6 @@ def initializeGame():
   dealer.dealCards(2, initPlayers)
   return dealer, initPlayers, pot
 
-def showWinner(players):
-    handTotals = {}
-    handTotals = {}
-    for player in players:
-      handTotals[player.calculateHand()] = player
-    return handTotals[max(handTotals.keys())]
-
 class Card:
   def __init__(self, suit, value, image, cardBack):
     self.cardBack = cardBack
