@@ -2,6 +2,7 @@ import random
 import os
 import sys
 import time
+import itertools
 
 cardImages = []
 values = list(range(1,14))
@@ -21,8 +22,9 @@ class Card:
     self.value = value
     self.image = image
     self.shortImage = []
-    for line in self.image:
-      self.shortImage.append(line[:4])
+    if self.image:
+      for line in self.image:
+        self.shortImage.append(line[:4])
     
   def __str__(self):
     return f'{self.value}'
@@ -106,6 +108,13 @@ class Player:
     
   def __str__(self):
     return (str(self.name))
+    self.setsOfFour = {}
+
+  def addSetOfFour(self, value: int):
+    if value in self.setsOfFour:
+      self.setsOfFour[value] += 1
+    else:
+      self.setsOfFour[value] = 1
 
   def addMoney(self, amount: int):
     self.money += amount
@@ -131,13 +140,11 @@ class Player:
 
   #function
   def MatchFour(self):
-    for i in range(len(self.hand)):
-      for j in range(i + 1, len(self.hand)):
-        for k in range(j + 1, len(self.hand)):
-          for l in range(k + 1, len(self.hand)):
-            if self.hand[i].value == self.hand[j].value == self.hand[k].value == self.hand[l].value:
-              print("You have a set of %ss!" % self.hand[i].value)
-              return True
+    for combination in itertools.combinations(self.hand, 4):
+      if all(card.value == combination[0].value for card in combination):
+        print("You have a set of %ss!" % combination[0].value)
+        self.addSetOfFour(combination[0].value)
+        return True
     return False
 
   def showHand(self, printShort: bool = False):
