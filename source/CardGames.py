@@ -256,7 +256,7 @@ class Dealer:
     houseHand = house.handSum()
     
     while houseHand < 17: #force hit when below 17
-      dealer.dealCards(1, [house])
+      self.dealCards(1, [house])
       houseHand = house.handSum()
     
   def bustCheck(self, player):
