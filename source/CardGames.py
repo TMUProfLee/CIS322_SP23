@@ -224,8 +224,10 @@ def initializeGame():
   pot = Pot(0)
   playerNames = []
   morePlayers = True
-  buyIn = int(input("Enter buy-in amount: "))
-  print()
+  amt = input("Enter buy-in amount: ")
+  while len(amt) == 0 or amt.isdigit() == False:
+    amt = input("Enter buy-in amount: ")
+  buyIn = int(amt)
   while morePlayers:
     anotherPlayer = input("Add another player? (Y/N): ")
     if anotherPlayer == "Y" or anotherPlayer == "y":
@@ -235,7 +237,6 @@ def initializeGame():
     else:
       morePlayers = False
       print()
-  print("Current Pot: " + str(pot.money))
   initPlayers = [] 
   for p in playerNames:
     initPlayers.append(Player(p))
@@ -252,7 +253,10 @@ def Play(dealer: Dealer, players: list, pot: Pot):
     current_money = player.money
     bet = 0
     while current_money == player.money and player.money > 0:
-      bet = int(input("Place Your Bet!\nAmount: "))
+      amt = input("Place Your Bet!\nAmount: ")
+      while len(amt) == 0 or amt.isdigit() == False:
+        amt = input("Place Your Bet!\nAmount: ")
+      bet = int(amt)
       if bet == 0:
         break
       player.makeBet(bet)
@@ -266,7 +270,7 @@ def Play(dealer: Dealer, players: list, pot: Pot):
     for player in players:
       player.display()
       draw = input("Enter 'draw' or 'pass': ")
-      if draw == "draw" or draw == "Draw":
+      if draw.lower() == "draw":
         dealer.dealCards(1, [player])
         print("Card drawn by %s.\n" % (player.name))
         player.display()
@@ -278,6 +282,7 @@ def Play(dealer: Dealer, players: list, pot: Pot):
         players_passed.append(player)
         players.pop(players.index(player))
       input("Next Player press 'Enter' when ready!")
+      print("\n" * 50)
   return players_passed
 
 def showWinner(players):
