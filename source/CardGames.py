@@ -83,6 +83,20 @@ class Deck:
     self.discarded.append(card)
     return card
 
+  def drawCard(self):
+      """
+      Draw a card from the top of the deck.
+      Returns:
+        Card: The card drawn from the top of the deck.
+      """
+      if self.size > 0:
+        card = self.getCard()
+        print(f"Card drawn: {card.suit} {card.value}")
+        return card
+      else:
+        print("No cards left in the deck.")
+        return None
+
 def getCard( suit, value):
   deck = Deck()
   my_card = Card( suit.capitalize(), value, None, None)
@@ -90,6 +104,8 @@ def getCard( suit, value):
     if card == my_card:
       return card
   return None
+
+
 
 ####################################################################################
 def count_cards(deck):
