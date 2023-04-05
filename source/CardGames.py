@@ -293,7 +293,7 @@ def showWinner(players, pot):
       handTotals[player.calculateHand()] = player
     winner = handTotals[max(handTotals.keys())] 
     pot.rewardPot(winner)
-    pot.resetPot(pot)
+    pot.resetPot()
     return winner
 
 wins = {}
