@@ -216,8 +216,7 @@ def question():
       print('player has card')
     elif y == 'no':
       print('Go fish')
-question()
-import os
+
 
 def start_game():
     print("**************************")
@@ -227,3 +226,4 @@ def start_game():
     print("**************************\n")
     num_players = input("How many players would you like to have? ")
     return int(num_players)
+start_game()
