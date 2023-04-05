@@ -256,7 +256,7 @@ class Dealer:
     houseHand = house.handSum()
     
     while houseHand < 17: #force hit when below 17
-      self.dealCards(1, [house])
+      dealer.dealCards(1, [house])
       houseHand = house.handSum()
     
   def bustCheck(self, player):
@@ -280,34 +280,113 @@ class Dealer:
       return 1 if houseHand <= 21 else 2
 #####################################################################################################################
 """Initializations"""
-
-player_name = input("Username: ")
-
-partition = player_name.find(";")
-config=""
-if partition > 0:
-  config = player_name[partition:]
-  player_name = player_name[0:partition]
-###
-deck_num = 1
-for_money = True
-early_shuffle = False
-###
-i=0
-label = ""
-while i < len(config):
-  if config[i] == ";":
-    label =""
-  else:
-    label = label + config[i]
-  i += 1
+import pygame 
   
-  if label == "free":
-    for_money = False
-  if label == "four":
-    deck_num = 4
-  if label == "shuffle":
-    early_shuffle = True
+pygame.init() 
+  
+# screen resolution 
+res = (720,720) 
+  
+# opens up a window 
+screen = pygame.display.set_mode(res) 
+  
+
+color = (255,255,255) 
+color_light = (170,170,170) 
+color_dark = (100,100,100) 
+  
+width = screen.get_width() 
+height = screen.get_height() 
+
+#options
+deck_num = 1
+early_shuffle = False
+for_money=True#unused
+  
+smallfont = pygame.font.SysFont('Corbel',35)
+
+#to add a new button only lines marked with ~~~ must be added
+quit_text = smallfont.render('quit' , True , color) #   ~~~
+decks_text = smallfont.render('number of decks' , True , color)
+play_text = smallfont.render('begin' , True , color)
+early_text = smallfont.render('early_shffle' , True , color)
+
+buttonlist=[        #[left,up,width,hight,text_offset]
+    [   [360,360,140,40,40],quit_text ],#   ~~~
+    [   [60,360,250,40,10],decks_text ],
+    [   [300,150,140,40,10],play_text ],
+    [   [300,250,140,40,10],early_text ]
+]
+
+
+in_menu=True 
+while in_menu: 
+      
+    for ev in pygame.event.get(): 
+          
+        if ev.type == pygame.QUIT: 
+            pygame.quit() 
+              
+        #checks if a mouse is clicked 
+        if ev.type == pygame.MOUSEBUTTONDOWN: 
+              
+            element = buttonlist[0]#first button   ~~~
+            if element[0][0] <= mouse[0] <= element[0][0]+element[0][2] and element[0][1] <= mouse[1] <= element[0][1]+element[0][3]:#   ~~~ 
+                pygame.quit()#   ~~~
+
+            element = buttonlist[1]#second button
+            if element[0][0] <= mouse[0] <= element[0][0]+element[0][2] and element[0][1] <= mouse[1] <= element[0][1]+element[0][3]: 
+                if deck_num==1:
+                    deck_num=2
+                elif deck_num==2:
+                    deck_num=4
+                elif deck_num==4:
+                    deck_num=8
+                elif deck_num==8:
+                    deck_num=1
+
+            element = buttonlist[2]#third button
+            if element[0][0] <= mouse[0] <= element[0][0]+element[0][2] and element[0][1] <= mouse[1] <= element[0][1]+element[0][3]:
+                in_menu=False
+            
+            element = buttonlist[3]#fouth button
+            if element[0][0] <= mouse[0] <= element[0][0]+element[0][2] and element[0][1] <= mouse[1] <= element[0][1]+element[0][3]:
+                if not early_shuffle:
+                    early_shuffle = True
+                else:
+                  early_shuffle = False
+
+    # background color 
+    screen.fill((60,25,60)) 
+      
+    # stores the (x,y) coordinates into 
+    # the variable as a tuple 
+    mouse = pygame.mouse.get_pos() 
+      
+    # if mouse is hovered on a button it changes to a lighter shade 
+    for element in buttonlist:
+        if element[0][0] <= mouse[0] <= element[0][0]+element[0][2] and element[0][1] <= mouse[1] <= element[0][1]+element[0][3]: 
+            pygame.draw.rect(screen,color_light,[element[0][0],element[0][1],element[0][2],element[0][3]]) 
+          
+        else: 
+            pygame.draw.rect(screen,color_dark,[element[0][0],element[0][1],element[0][2],element[0][3]]) 
+      
+        # superimposing the prompt text onto our button 
+        screen.blit(element[1], (element[0][0]+element[0][4],element[0][1])) 
+    #deck value
+    deckCount = smallfont.render( str(deck_num), True , color)
+    element = buttonlist[1]#second button
+    screen.blit(deckCount, (element[0][0]+element[0][4],element[0][1]+40))
+    #shuffle style
+    earlyValue = smallfont.render( str(early_shuffle), True , color)
+    element = buttonlist[3]#fouth button
+    screen.blit(earlyValue, (element[0][0]+element[0][4],element[0][1]+40))
+
+    pygame.display.update() 
+
+screen.fill((60,25,60))
+pygame.display.update()
+player_name = "john"
 
 deck = Deck(deck_num)
 deck.shuffle
