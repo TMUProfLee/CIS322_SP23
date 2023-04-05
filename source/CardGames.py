@@ -400,6 +400,15 @@ betting = True
 
 while betting:
     
+
+    for ev in pygame.event.get(): 
+          
+        if ev.type == pygame.QUIT: 
+            pygame.quit() 
+              
+        #checks if a mouse is clicked 
+        if ev.type == pygame.MOUSEBUTTONDOWN:
+            pass
     if for_money:
       """Player Bet"""
       if player_name.money == 0:
