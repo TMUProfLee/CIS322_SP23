@@ -307,5 +307,5 @@ def showLeaderboard(wins):
     print(leaderboard)
 
 params = initializeGame()
-updateLeaderboard(showWinner(Play(params[0], params[1], params[2])))
+updateLeaderboard(showWinner(Play(params[0], params[1], params[2])).name)
 showLeaderboard(wins)
