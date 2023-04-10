@@ -282,7 +282,8 @@ def Play(dealer: Dealer, players: list, pot: Pot):
         dealer.dealCards(1, [player])
         print("Card drawn by %s.\n" % (player.name))
         player.display()
-        checkIfEasterEgg(player)
+        if(checkIfEasterEgg(player)):
+          print("You found a secret...?")
         if player.bust() == True:
           print("You bust!\n")
           players.pop(players.index(player))
