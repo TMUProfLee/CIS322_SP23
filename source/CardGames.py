@@ -174,7 +174,7 @@ class Player:
             image = card.image[idx]
             print(image, end="")
         else:
-          image = card.image[idx] if self.knownCards[i] and not showBack else card.cardBack[idx]
+          image = card.image[idx] if self.knownCards[i] else card.cardBack[idx]
           print(image, end="")
       print()
 
@@ -427,4 +427,4 @@ def blackjack():
       if deck.size <=52 and early_shuffle:
         dealer.resetDeck()
 
-blackjack()
+#blackjack()
