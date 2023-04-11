@@ -211,20 +211,6 @@ class Player:
       report.append([pairValue,matches/2])
     return report
   
-  def splitHand(self):
-    pass
-    # first, need to check if the first two cards are a pair
-    # ask the player if they want to split
-    # if they do, they add the second card to the second hand
-            # add the current bet to the second hand
-            # ask to hit or stand 
-                # if hit and the hand is a pair, call splitHand() again
-    # Either because of stand or bust, the player moves on to the other hand
-    # Ask to hit or stand
-    # after the player has hit or stood for all their hands let the house play their hand
-    # compare the house handsum with each player hand 
-        # calculate bet result relating to each hand
-  
   def clearHand(self):
     self.hand = []
     self.knownCards = []
