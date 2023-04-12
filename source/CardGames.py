@@ -427,4 +427,4 @@ def blackjack():
       if deck.size <=52 and early_shuffle:
         dealer.resetDeck()
 
-#blackjack()
+blackjack()
