@@ -12,7 +12,6 @@ def find_root_dir():
     cwd = os.path.join( cwd, '..')
   return cwd
 
-
 class Card:
   def __init__(self, suit, value, image, cardBack):
     self.cardBack = cardBack
@@ -306,19 +305,33 @@ def showWinner(players, pot):
     pot.resetPot()
     return winner
 
-wins = {}
-def updateLeaderboard(winner):
-    global wins
-    if winner not in wins:
-      wins[winner] = 1
-    else:
-      wins[winner] += 1
-    
-def showLeaderboard(wins):
-    leaderboard = "\nLEADERBOARD:\n"
-    for winner in wins:
-      leaderboard += f"{winner.name}: {wins[winner]} wins\n"
-    print(leaderboard)
+source_folder = os.path.join(os.getcwd(), '..', 'source')
+leaderboard_file = os.path.join(source_folder, 'leaderboard.txt')
+
+def updateLeaderboard(player):
+    playerFound = False
+    with open(leaderboard_file, 'r') as file:
+        lines = file.readlines()
+    with open(leaderboard_file, 'w') as file:
+        for line in lines:
+            if player in line:
+                parts = line.split(':')
+                winCount = int(parts[1]) + 1
+                newLine = f"{parts[0]}:{winCount}\n"
+                file.write(newLine)
+                playerFound = True
+            else:
+                file.write(line)
+        if not playerFound:
+            newLine = f"{player}:1\n"
+            file.write(newLine)
+  
+def showLeaderboard():
+    with open(leaderboard_file, 'r') as file:
+        leaderboard = file.readlines()
+    print('\nLEADERBOARD:')
+    for line in leaderboard:
+        print(line.strip())
 
 params = initializeGame()
 updateLeaderboard(showWinner(Play(params[0], params[1], params[2])).name)
