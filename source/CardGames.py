@@ -217,6 +217,14 @@ class Pot:
     player.addMoney(self.money)
     self.money = 0
 
+def checkIfEasterEgg(player):
+  for c in player.hand:
+    if(c.suit == "Hearts" and c.value == 11): #ace of hearts
+      import webbrowser
+      webbrowser.open('https://www.youtube.com/watch?v=V-_O7nl0Ii0')
+      return True
+  return False
+
 def initializeGame():
   deck = Deck()
   dealer = Dealer(deck)
@@ -247,7 +255,6 @@ def initializeGame():
   def resetPot(self):
     self.money = 0
 
-
 def Play(dealer: Dealer, players: list, pot: Pot):
   #Players make bets after they are dealt their cards
   print("===========================\nSTART BETS\n===========================")
@@ -277,6 +284,8 @@ def Play(dealer: Dealer, players: list, pot: Pot):
         dealer.dealCards(1, [player])
         print("Card drawn by %s.\n" % (player.name))
         player.display()
+        if(checkIfEasterEgg(player)):
+          print("You found a secret...?")
         if player.bust() == True:
           print("You bust!\n")
           players.pop(players.index(player))
