@@ -68,12 +68,10 @@ def blackjack():
         house.addCard(six_spades)
         player_name.splitHand()
         
-
       else:
         player_name = player_name.hands.pop()
         dealer.dealCards(1, [player_name])
         
-  
       """check to see if someone has blackjack"""
       blackjackOutcome = dealer.blackjackChecker(house, player_name)
       if blackjackOutcome == 1:
@@ -94,7 +92,6 @@ def blackjack():
         print(f"You now have ${player_name.money}")
         
       else:
-        
         """ Print both hands of the player and dealer """
         print("\nYour Hand: ", player_name.handSum()), player_name.showHand()
         print("\nDealer's Hand: ", house.handSum(hideSum=True)), house.showHand(showBack= True)
@@ -117,7 +114,6 @@ def blackjack():
         blackjack()
 
       else:
-
         """After the player is done, let the house complete its turn"""
         dealer.dealerHand(house)
         print("\nDealer's Hand: ", house.handSum())
@@ -155,31 +151,3 @@ def blackjack():
         dealer.resetDeck()
 
 blackjack()
-
-
-""" def splitHand(player_name):
-    if player_name.pairCheck() == True:
-        split_decision = input("Do you want to split your hand? (y/n): ")
-        if split_decision == "y":
-            # add card to created hand
-            hand2 = Player(player_name)
-            card = player_name.hand.pop(0)
-            hand2.addCard(card)
-
-
-            hand2.showHand()
-            player_name.showHand()
-    
-    player_hands.append(hand2)
-
-
-# play original hand until I stand or bust
-# Play second hand until I stand or bust
-
-# then let the house play and compare both hands against the house
- """
-
-
-
-
-
