@@ -395,8 +395,8 @@ while in_menu:
     pygame.display.update() 
 
 ##game
-
-screen.fill((60,25,60))
+background=(0,60,60)
+screen.fill((background))
 pygame.display.update()
 player_name = "john"
 
@@ -411,32 +411,45 @@ house = Player("house")
 betting = True
 
 while betting:
-    
 
-    for ev in pygame.event.get(): 
-          
-        if ev.type == pygame.QUIT: 
-            pygame.quit() 
-              
-        #checks if a mouse is clicked 
-        if ev.type == pygame.MOUSEBUTTONDOWN:
-            pass
-    if for_money:
-      """Player Bet"""
-      if player_name.money == 0:
+    """Player Bet"""
+    if player_name.money == 0:
         "You lost all your money gambeling ;( . . . . Come back later when you get more! :)"
         break
-      bet = int(input("How much would you like to bet? "))
-      while player_name.makeBet(bet) == False:
-        bet = int(input("\nHow much would you like to bet? "))
-    else:
-      bet=0
+
+    wager="0"
+    asking_for_bet =True
+    while asking_for_bet:
+      for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+          pygame.quit()
+            
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_BACKSPACE:
+              if len(wager)>0 and wager != "0":
+                wager = wager[:-1]
+              if wager == "":
+                wager = "0"
+            elif event.key == pygame.K_RETURN:
+              asking_for_bet = False
+            elif type(event.key) is int :
+              if wager == "0":
+                wager = wager[:-1]
+              wager += event.unicode
+
+
+        screen.fill((background))
+        wager_text = smallfont.render( "wager: "+wager, True , color)
+        screen.blit(wager_text, (400,360))
+        pygame.display.update()
+
+    bet = int(wager)
   
     betting_box = Betting_box(bet, [player_name])
 
     """Give both the house and the player 2 cards to start the game"""
     dealer.dealCards(2, [player_name, house])
-    print("\nYour Hand: ", player_name.handSum())  
+    print("\nYour Hand: ", player_name.handSum())
     player_name.showHand()
     print("\nDealer's Hand: ", house.handSum())
     house.showHand()
