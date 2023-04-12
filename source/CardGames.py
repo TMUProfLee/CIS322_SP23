@@ -217,7 +217,6 @@ class Pot:
     player.addMoney(self.money)
     self.money = 0
 
-
 def initializeGame():
   deck = Deck()
   dealer = Dealer(deck)
@@ -244,6 +243,10 @@ def initializeGame():
   for player in initPlayers:
     player.money += buyIn
   return [dealer, initPlayers, pot]
+
+  def resetPot(self):
+    self.money = 0
+
 
 def Play(dealer: Dealer, players: list, pot: Pot):
   #Players make bets after they are dealt their cards
@@ -285,11 +288,13 @@ def Play(dealer: Dealer, players: list, pot: Pot):
       print("\n" * 50)
   return players_passed
 
-def showWinner(players):
+def showWinner(players, pot):
     handTotals = {}
     for player in players:
       handTotals[player.calculateHand()] = player
     winner = handTotals[max(handTotals.keys())] 
+    pot.rewardPot(winner)
+    pot.resetPot()
     return winner
 
 wins = {}
