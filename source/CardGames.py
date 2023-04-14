@@ -219,10 +219,37 @@ class Pot:
 def checkIfEasterEgg(player):
   for c in player.hand:
     if(c.suit == "Hearts" and c.value == 11): #ace of hearts
-      import webbrowser
-      webbrowser.open('https://www.youtube.com/watch?v=V-_O7nl0Ii0')
       return True
   return False
+
+
+def playMiniGame(pot):
+  import random
+  secret_number = random.randint(1, 10)
+  print("I'm thinking of a number between 1 and 10. Can you guess what it is? You have 5 tries")
+  guesses = 5
+  while guesses > 0:
+    guess = int(input(str(guesses) + " guess(es): "))
+    guesses -= 1
+    if guess < secret_number:
+      print("Too low!")
+    elif guess > secret_number:
+      print("Too high!")
+    else:
+      break
+  if guess == secret_number:
+    print("Congratulations, you guessed the number with " + str(guesses) + " guess(es) to spare!")
+  else:
+    print("Sorry, you ran out of guesses. The number was " + str(secret_number) + ".")
+    return 0
+  
+  if(guesses > 1):
+    pot.money *= guesses
+    print("Because of this, I'm going to multiply the pot by " + str(guesses))
+    print("The stakes are high!")
+    print("")
+            
+  return guesses
 
 def initializeGame():
   deck = Deck()
@@ -284,7 +311,8 @@ def Play(dealer: Dealer, players: list, pot: Pot):
         print("Card drawn by %s.\n" % (player.name))
         player.display()
         if(checkIfEasterEgg(player)):
-          print("You found a secret...?")
+          print("You drew the Ace of Hearts! You found a minigame")
+          playMiniGame(pot)
         if player.bust() == True:
           print("You bust!\n")
           players.pop(players.index(player))
@@ -335,4 +363,4 @@ def showLeaderboard():
 
 params = initializeGame()
 updateLeaderboard(showWinner(Play(params[0], params[1], params[2])).name)
-showLeaderboard(wins)
+showLeaderboard()
