@@ -249,14 +249,11 @@ def initializeGame():
   dealer.dealCards(2, initPlayers)
   for player in initPlayers:
     player.money += buyIn
-  return [dealer, initPlayers, pot]
-
-  def resetPot(self):
-    self.money = 0
+  return [dealer, initPlayers, pot, buyIn]
 
 def Play(dealer: Dealer, players: list, pot: Pot):
   #Players make bets after they are dealt their cards
-  print("===========================\nSTART BETS\n===========================")
+  print("~~~~~~~~~~~~~~~~~~~~~~~~~~~\nSTART BETS\n~~~~~~~~~~~~~~~~~~~~~~~~~~~")
   for player in players:
     player.display()
     current_money = player.money
@@ -271,7 +268,7 @@ def Play(dealer: Dealer, players: list, pot: Pot):
       player.makeBet(bet)
     pot.addPot(bet)
     print("\n")
-  print("===========================\nEND BETS\n===========================\n")
+  print("~~~~~~~~~~~~~~~~~~~~~~~~~~~\nEND BETS\n~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
   
   #Main game loop
   players_passed = []
@@ -294,19 +291,24 @@ def Play(dealer: Dealer, players: list, pot: Pot):
         players.pop(players.index(player))
       input("Next Player press 'Enter' when ready!")
       print("\n" * 50)
-  return players_passed
+  return [players_passed, pot]
 
-def showWinner(players, pot):
+def showWinner(players, pot, buyIn):
     handTotals = {}
     for player in players:
       handTotals[player.calculateHand()] = player
-    winner = handTotals[max(handTotals.keys())] 
+    winner = handTotals[max(handTotals.keys())]
+    bonus = buyIn - winner.money
+    pot.addPot(bonus) 
     pot.rewardPot(winner)
-    pot.resetPot()
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~\n $$$ PLAYER TOTALS $$$ \n~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    for player in players:
+      print("%s: $%d" % (player.name, player.money))
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print('\n')
     return winner
 
-source_folder = os.path.join(os.getcwd(), '..', 'source')
-leaderboard_file = os.path.join(source_folder, 'leaderboard.txt')
+leaderboard_file = 'source/leaderboard.txt'
 
 def updateLeaderboard(player):
     playerFound = False
@@ -314,25 +316,27 @@ def updateLeaderboard(player):
         lines = file.readlines()
     with open(leaderboard_file, 'w') as file:
         for line in lines:
-            if player in line:
-                parts = line.split(':')
-                winCount = int(parts[1]) + 1
-                newLine = f"{parts[0]}:{winCount}\n"
-                file.write(newLine)
-                playerFound = True
-            else:
-                file.write(line)
-        if not playerFound:
-            newLine = f"{player}:1\n"
+          if player in line:
+            parts = line.split(':')
+            winCount = int(parts[1]) + 1
+            newLine = f"{parts[0]}: {winCount}\n"
             file.write(newLine)
+            playerFound = True
+          else:
+            file.write(line)
+        if not playerFound:
+          newLine = f"{player}:1\n"
+          file.write(newLine)
   
 def showLeaderboard():
     with open(leaderboard_file, 'r') as file:
-        leaderboard = file.readlines()
-    print('\nLEADERBOARD:')
+      leaderboard = file.readlines()
+    print('~~~~~~~~~~~~~~~~~~~~~~~~~~\nLEADERBOARD\n~~~~~~~~~~~~~~~~~~~~~~~~~~')
     for line in leaderboard:
-        print(line.strip())
+      print(line.strip())
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
 
 params = initializeGame()
-updateLeaderboard(showWinner(Play(params[0], params[1], params[2])).name)
-showLeaderboard(wins)
+gameplay = Play(params[0], params[1], params[2])
+updateLeaderboard(showWinner(gameplay[0], gameplay[1], params[3]).name)
+showLeaderboard()
