@@ -1,9 +1,68 @@
 import random
 import os
+import pygame 
+pygame.init() 
 
 cardImages = []
 values = [11,2,3,4,5,6,7,8,9,10,10,10,10] # blackjack card values
 suits = ["Spades", "Clubs", "Hearts", "Diamonds"]
+
+#pygame surfaces can be blit onto screen
+cardback = pygame.image.load("source/Cards/redBack.png")
+cardSurfaceList =[]
+cardSurfaceList .append( pygame.image.load("source/Cards/ace.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
 
 def find_root_dir():
   cwd = os.getcwd()
@@ -13,15 +72,17 @@ def find_root_dir():
   return cwd
 ######################################################################################################################
 class Card:
-  def __init__(self, suit, value, image, cardBack):
+  def __init__(self, suit, value, image, cardBack,surfaceObj=None):
     self.cardBack = cardBack
     self.suit = suit
     self.value = value
     self.image = image
     self.shortImage = []
+    self.surfaceObj = surfaceObj
     if self.image:
       for line in self.image:
         self.shortImage.append(line[:4])
+
 
   def __eq__(self, other):
     if not type(other) == Card:
@@ -30,7 +91,7 @@ class Card:
       self.value == other.value
 #######################################################################################################################
 class Deck:
-  def __init__(self,deck_count=1):#by default the number of deck is one
+  def __init__(self,cardSurfaceList,deck_count=1):#by default the number of deck is one
     root_dir = os.path.join( find_root_dir(), 'source')
     cards_file = f'{root_dir}{os.path.sep}playing_cards.txt'
     with open(cards_file, "r") as cards:
@@ -54,7 +115,7 @@ class Deck:
       index = 0
       for suit in suits:
         for value in values:
-          deck.append(Card(suit, value, cardImages[index], cardBack))
+          deck.append(Card(suit, value, cardImages[index], cardBack,cardSurfaceList[index]))
           index += 1
       deck_count -= 1
     self.cards = deck
@@ -166,7 +227,11 @@ class Player:
           image = card.image[idx] if self.knownCards[i] else card.cardBack[idx]
           print(image, end="")
       print()
-
+  def cardImages(self):#returns a list of surface objects
+    aList =[]
+    for card in self.hand:
+      aList.append(card.surfaceObj)
+    return aList
   def pairCheck(self):#returns a list of values that appear at least twice in the players hand
     pairlist=[]
     aVar1 = 0
@@ -278,11 +343,33 @@ class Dealer:
     
     else:
       return 1 if houseHand <= 21 else 2
+
+def wait():
+  waiting = False
+  while not waiting:#makes certain the user has let go of the button
+    for event in pygame.event.get():
+      if event.type == pygame.KEYUP or event.type == pygame.MOUSEBUTTONUP:
+        waiting = True
+        pygame.event.clear()
+  while waiting:
+    for event in pygame.event.get():
+      if event.type == pygame.QUIT:
+        pygame.quit()
+            
+      if event.type == pygame.KEYUP or event.type == pygame.MOUSEBUTTONUP:
+        waiting = False
+def handsDisplay():
+    #house cards
+
+    screen.blit(cardback,(500,120))
+    screen.blit(house.cardImages()[0],(400,120))
+    #player cards
+    x= 505 - 45*len(player_name.cardImages())
+    for acard in player_name.cardImages():
+      screen.blit(acard,(x,420))
+      x+=90
 #####################################################################################################################
 """Initializations"""
-import pygame 
-  
-pygame.init() 
   
 # screen size
 res = (1080,720) 
@@ -400,7 +487,7 @@ screen.fill((background))
 pygame.display.update()
 player_name = "john"
 
-deck = Deck(deck_num)
+deck = Deck(cardSurfaceList,deck_num)
 deck.shuffle
 
 dealer = Dealer(deck)
@@ -408,8 +495,9 @@ player_name = Player(player_name)
 player_name.addMoney(500)
 house = Player("house")
 
-betting = True
 
+promptText = smallfont.render( "Press/Click to continue.", True , color)
+betting = True
 while betting:
 
     """Player Bet"""
@@ -432,7 +520,7 @@ while betting:
                 wager = "0"
             elif event.key == pygame.K_RETURN:
               asking_for_bet = False
-            elif type(event.key) is int :
+            elif event.unicode.isdigit() :
               if wager == "0":
                 wager = wager[:-1]
               wager += event.unicode
@@ -454,30 +542,81 @@ while betting:
     print("\nDealer's Hand: ", house.handSum())
     house.showHand()
 
+    screen.fill((background))
+    handsDisplay()#blits the cards to the screen
+    screen.blit(promptText, (350,360))
+    pygame.display.update()
+
+    wait()#stalls till user input
+
     """check to see if someone has blackjack"""
     blackjackOutcome = dealer.blackjackChecker(house, player_name)
     if blackjackOutcome == 1:
       print("The house has blackjack. You lose!")
       betting_box.collect(blackjackOutcome)
       print(f"You now have ${player_name.money}")
+
+      screen.fill((background))
+      handsDisplay()#blits the cards to the screen
+      lwp = smallfont.render( "The house has blackjack. You lose!", True , color)
+      screen.blit(lwp, (300,320))
+      screen.blit(promptText, (350,400))
+      pygame.display.update()
+      wait()
+
     elif blackjackOutcome == 2:
       print("Blackjack! You win!")
       betting_box.collect(blackjackOutcome)
       print(f"You now have ${player_name.money}")
+
+      screen.fill((background))
+      handsDisplay()#blits the cards to the screen
+      lwp = smallfont.render( "Blackjack! You win!", True , color)
+      screen.blit(lwp, (340,320))
+      screen.blit(promptText, (350,400))
+      pygame.display.update()
+      wait()
+
     elif blackjackOutcome == 3:
       print("It's a push! You both have blackjack.")
       betting_box.collect(blackjackOutcome)
       print(f"You now have ${player_name.money}")
       
+      screen.fill((background))
+      handsDisplay()#blits the cards to the screen
+      lwp = smallfont.render( "It's a push! You both have blackjack.", True , color)
+      screen.blit(lwp, (240,320))
+      screen.blit(promptText, (350,400))
+      pygame.display.update()
+      wait()
+
     else:
       """while the player doesn't bust, allow them to choose to hit or pass"""
       bust = False
       while not bust :
-        hit_stand = input("\nhit or stand? ")
+        screen.fill((background))
+        playPrompt = smallfont.render( 'Press "h" to hit and "s" to stand', True , color)
+        screen.blit(playPrompt, (200,320))  
+        handsDisplay()#blits the cards to the screen
+        pygame.display.update()
+        
+        hit_stand = ""
+        while hit_stand =="":
+          for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+              pygame.quit()
+
+            if event.type == pygame.KEYDOWN:
+              if event.key == pygame.K_h or event.key == pygame.K_j or event.key == pygame.K_k or event.key == pygame.K_l:
+                hit_stand = "hit"
+              if event.key == pygame.K_f or event.key == pygame.K_d or event.key == pygame.K_s or event.key == pygame.K_a:
+                hit_stand ="stand"
+
         if hit_stand == "hit":
           dealer.dealCards(1,[player_name])
-          print("\nYour Hand: ", player_name.handSum())  
+          print("\nYour Hand: ", player_name.handSum())
           player_name.showHand()
+
           if dealer.bustCheck(player_name) == True:
             print("\nBust!")
             bust = True
