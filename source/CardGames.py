@@ -21,8 +21,9 @@ class Card:
     self.value = value
     self.image = image
     self.shortImage = []
-    for line in self.image:
-      self.shortImage.append(line[:4])
+    if self.image:
+      for line in self.image:
+        self.shortImage.append(line[:4])
     
   def __str__(self):
     return f'{self.value}'
@@ -97,7 +98,7 @@ class Deck:
 
 def getCard( suit, value):
   deck = Deck()
-  my_card = Card( suit.capitalize(), value, None, None)
+  my_card = Card(suit.capitalize(), value, None, None)
   for card in deck.cards:
     if card == my_card:
       return card
@@ -251,15 +252,15 @@ class Dealer:
 
 
 class GoFish:
-  def __init__(self, players: "list[Player]"):
+  def __init__(self):
     self.playerinfo = []
-    self.players = players
-    self.value_wanted = int
-    self.suit_wanted = ""
-    self.player_asked = ""
-    self.player_turn = ""
-    self.info_player_turn = int
-    self.info_player_asked = int
+    self.players = []
+    self.value_wanted = 0
+    self.player_asked = None
+    self.player_turn = None
+    self.info_player_turn = 0
+    self.info_player_asked = 0
+    self.player_score = 0
 
   def start_game(self):
     deck = Deck()
@@ -283,6 +284,12 @@ class GoFish:
       player = info[i][0]
       if str(player_wanted) == str(player):
         return i
+
+  def score(self): #scorekeeping function
+    print(self.player_turn.hand)
+    if self.player_turn.MatchFour(): #if player has a set of 4
+      self.player_score += 1 #add 1 to score
+    return self.player_score 
 
   def surrender_card(self):
     temp_list1 = []
