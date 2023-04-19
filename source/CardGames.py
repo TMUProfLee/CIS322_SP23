@@ -11,58 +11,60 @@ suits = ["Spades", "Clubs", "Hearts", "Diamonds"]
 cardback = pygame.image.load("source/Cards/redBack.png")
 cardSurfaceList =[]
 cardSurfaceList .append( pygame.image.load("source/Cards/ace.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
-cardSurfaceList .append( pygame.image.load("source/Cards/Back.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/two.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/three.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/four.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/five.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/six.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/seven.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/eight.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/nine.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/ten.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/jack.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/queen.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/king.png"))
+
+cardSurfaceList .append( pygame.image.load("source/Cards/ace.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/two.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/three.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/four.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/five.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/six.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/seven.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/eight.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/nine.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/ten.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/jack.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/queen.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/king.png"))
+
+cardSurfaceList .append( pygame.image.load("source/Cards/ace.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/two.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/three.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/four.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/five.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/six.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/seven.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/eight.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/nine.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/ten.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/jack.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/queen.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/king.png"))
+
+cardSurfaceList .append( pygame.image.load("source/Cards/ace.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/two.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/three.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/four.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/five.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/six.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/seven.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/eight.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/nine.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/ten.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/jack.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/queen.png"))
+cardSurfaceList .append( pygame.image.load("source/Cards/king.png"))
 
 def find_root_dir():
   cwd = os.getcwd()
@@ -358,11 +360,17 @@ def wait():
             
       if event.type == pygame.KEYUP or event.type == pygame.MOUSEBUTTONUP:
         waiting = False
-def handsDisplay():
+def handsDisplay(hidden=True):
     #house cards
-
-    screen.blit(cardback,(500,120))
-    screen.blit(house.cardImages()[0],(400,120))
+    if not hidden:
+      print("not hidden")
+      x= 505 - 45*len(house.cardImages())
+      for acard in house.cardImages():
+        screen.blit(acard,(x,120))
+        x+=90
+    if hidden:
+      screen.blit(cardback,(500,120))
+      screen.blit(house.cardImages()[0],(400,120))
     #player cards
     x= 505 - 45*len(player_name.cardImages())
     for acard in player_name.cardImages():
@@ -626,6 +634,7 @@ while betting:
         pass
       else:
         house.showHand()
+        
       
       """Compare house and player's hands to see who wins. Then handle win/loss interaction."""
       print("\n")
@@ -634,18 +643,61 @@ while betting:
         print("You won!")
         betting_box.collect(winner)
         print(f"You now have ${player_name.money}")
+
+        screen.fill((background))
+        handsDisplay(False)#blits the cards to the screen
+        resultText = smallfont.render( "You won!", True , color)
+        screen.blit(resultText, (320,300))
+        screen.blit(promptText, (320,350))
+        pygame.display.update()
+        wait()
       elif winner == 1:
         print("You lost. The dealer won!")
         betting_box.collect(winner)
         print(f"You now have ${player_name.money}")
+
+        screen.fill((background))
+        handsDisplay(False)#blits the cards to the screen
+        resultText = smallfont.render( "You lost!", True , color)
+        screen.blit(resultText, (320,300))
+        screen.blit(promptText, (320,350))
+        pygame.display.update()
+        wait()
       else:
         print("It's a push!")
         betting_box.collect(winner)
         print(f"You now have ${player_name.money}")
 
+        screen.fill((background))
+        handsDisplay(False)#blits the cards to the screen
+        resultText = smallfont.render( "It's a push!", True , color)
+        screen.blit(resultText, (320,300))
+        screen.blit(promptText, (320,350))
+        pygame.display.update()
+        wait()
+
     """"Clear hands and ask if they want to play again"""
     print("Cards remaining in deck:", deck.size)
-    start = input("\nWould you like to play again (y/n)? ")
+  
+    screen.fill(background)
+    resultText = smallfont.render( "enter to continue. space to quit", True , color)
+    screen.blit(resultText, (160,300))
+    pygame.display.update()
+
+    waiting = True
+    while waiting:
+      for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+          pygame.quit()
+            
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+              start = "n"
+              waiting = False
+            if event.key == pygame.K_RETURN:
+              start = "y"
+              waiting = False
+
     if start == "n":
       betting = False
     else:
