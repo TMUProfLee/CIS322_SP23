@@ -537,10 +537,11 @@ while betting:
         screen.fill((background))
         wager_text = smallfont.render( "wager: "+wager, True , color)
         screen.blit(wager_text, (400,360))
+        walletText = smallfont.render("reserve: $"+str(player_name.money),True, color)
+        screen.blit(walletText, (12,6))
         pygame.display.update()
 
     bet = int(wager)
-  
     betting_box = Betting_box(bet, [player_name])
 
     """Give both the house and the player 2 cards to start the game"""
@@ -562,6 +563,8 @@ while betting:
       lwp = smallfont.render( "The house has blackjack. You lose!", True , color)
       screen.blit(lwp, (300,320))
       screen.blit(promptText, (350,400))
+      walletText = smallfont.render("reserve: $"+str(player_name.money),True, color)
+      screen.blit(walletText, (12,6))
       pygame.display.update()
       wait()
 
@@ -575,6 +578,8 @@ while betting:
       lwp = smallfont.render( "Blackjack! You win!", True , color)
       screen.blit(lwp, (340,320))
       screen.blit(promptText, (350,400))
+      walletText = smallfont.render("reserve: $"+str(player_name.money),True, color)
+      screen.blit(walletText, (12,6))
       pygame.display.update()
       wait()
 
@@ -588,6 +593,8 @@ while betting:
       lwp = smallfont.render( "It's a push! You both have blackjack.", True , color)
       screen.blit(lwp, (240,320))
       screen.blit(promptText, (350,400))
+      walletText = smallfont.render("reserve: $"+str(player_name.money),True, color)
+      screen.blit(walletText, (12,6))
       pygame.display.update()
       wait()
 
@@ -599,6 +606,8 @@ while betting:
         playPrompt = smallfont.render( 'Press "h" to hit and "s" to stand', True , color)
         screen.blit(playPrompt, (200,320))  
         handsDisplay()#blits the cards to the screen
+        walletText = smallfont.render("reserve: $"+str(player_name.money),True, color)
+        screen.blit(walletText, (12,6))
         pygame.display.update()
         
         hit_stand = ""
@@ -649,6 +658,8 @@ while betting:
         resultText = smallfont.render( "You won!", True , color)
         screen.blit(resultText, (320,300))
         screen.blit(promptText, (320,350))
+        walletText = smallfont.render("reserve: $"+str(player_name.money),True, color)
+        screen.blit(walletText, (12,6))
         pygame.display.update()
         wait()
       elif winner == 1:
@@ -661,6 +672,8 @@ while betting:
         resultText = smallfont.render( "You lost!", True , color)
         screen.blit(resultText, (320,300))
         screen.blit(promptText, (320,350))
+        walletText = smallfont.render("reserve: $"+str(player_name.money),True, color)
+        screen.blit(walletText, (12,6))
         pygame.display.update()
         wait()
       else:
@@ -673,6 +686,8 @@ while betting:
         resultText = smallfont.render( "It's a push!", True , color)
         screen.blit(resultText, (320,300))
         screen.blit(promptText, (320,350))
+        walletText = smallfont.render("reserve: $"+str(player_name.money),True, color)
+        screen.blit(walletText, (12,6))
         pygame.display.update()
         wait()
 
@@ -682,6 +697,8 @@ while betting:
     screen.fill(background)
     resultText = smallfont.render( "enter to continue. space to quit", True , color)
     screen.blit(resultText, (160,300))
+    walletText = smallfont.render("reserve: $"+str(player_name.money),True, color)
+    screen.blit(walletText, (12,6))
     pygame.display.update()
 
     waiting = True
