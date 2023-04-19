@@ -542,13 +542,6 @@ while betting:
     print("\nDealer's Hand: ", house.handSum())
     house.showHand()
 
-    screen.fill((background))
-    handsDisplay()#blits the cards to the screen
-    screen.blit(promptText, (350,360))
-    pygame.display.update()
-
-    wait()#stalls till user input
-
     """check to see if someone has blackjack"""
     blackjackOutcome = dealer.blackjackChecker(house, player_name)
     if blackjackOutcome == 1:
