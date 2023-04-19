@@ -2,6 +2,8 @@
 import random
 import os
 import time
+import itertools
+
 cardImages = []
 values = list(range(1,14))
 suits = ["Spades", "Clubs", "Hearts", "Diamonds"]
@@ -20,8 +22,12 @@ class Card:
     self.value = value
     self.image = image
     self.shortImage = []
-    for line in self.image:
-      self.shortImage.append(line[:4])
+    if self.image:
+      for line in self.image:
+        self.shortImage.append(line[:4])
+    
+  def __str__(self):
+    return f'{self.value}'
 
   def __eq__(self, other):
     if not type(other) == Card:
@@ -77,12 +83,41 @@ class Deck:
     self.discarded.append(card)
     return card
 
+def getCard( suit, value):
+  deck = Deck()
+  my_card = Card( suit.capitalize(), value, None, None)
+  for card in deck.cards:
+    if card == my_card:
+      return card
+  return None
+
+####################################################################################
+def count_cards(deck):
+  #How many cards are in the deck assigned to "num_cards"
+  num_cards = len(deck)
+  #For each iteration the number of cars in the deck decrease by 1 card
+  for i in range(num_cards):
+    print("There are "+ str(num_cards - i) +" more cards in the deck")
+#when the deck reaches 0, then the game is over
+  if num_cards == 0:
+      print("The deck is now empty. Game over, Thanks for playing!")
+#####################################################################################
 class Player:
   def __init__(self, name, money: int = 0):
     self.name = name
     self.hand = []
     self.knownCards = []
     self.money = money
+    
+  def __str__(self):
+    return (str(self.name))
+    self.setsOfFour = {}
+
+  def addSetOfFour(self, value: int):
+    if value in self.setsOfFour:
+      self.setsOfFour[value] += 1
+    else:
+      self.setsOfFour[value] = 1
 
   def addMoney(self, amount: int):
     self.money += amount
@@ -101,6 +136,19 @@ class Player:
       self.knownCards.append(True)
     else:
       self.knownCards.append(False)
+
+  def setHand(self, cards: "list[Card]", isKnown: bool = False):
+    self.hand = cards
+    self.knownCards = [isKnown for _ in self.hand]
+
+  #function
+  def MatchFour(self):
+    for combination in itertools.combinations(self.hand, 4):
+      if all(card.value == combination[0].value for card in combination):
+        print("You have a set of %ss!" % combination[0].value)
+        self.addSetOfFour(combination[0].value)
+        return True
+    return False
 
   def showHand(self, printShort: bool = False):
     for idx in range(6):
@@ -167,8 +215,93 @@ class Dealer:
   def resetDeck(self):
     self.deck.reset()
     self.deck.shuffle()
-  
 
+  def printHands(self, players: dict):
+    # Show each player's hand
+    for player in players.values():
+        print(f'{player.name}:')
+        player.showHand(True)
+        print() 
+class GoFish:
+  def __init__(self, players: "list[Player]"):
+    self.playerinfo = []
+    self.players = players
+    self.value_wanted = int
+    self.suit_wanted = ""
+    self.player_asked = ""
+    self.player_turn = ""
+    self.info_player_turn = int
+    self.info_player_asked = int
+
+  def start_game(self):
+    deck = Deck()
+    dealer = Dealer(deck)
+    dealer.dealCards(5, self.players)
+    for player in self.players:
+      player.showHand(player.hand)
+    
+  def player_deck_info(self):
+    for i in range(len(self.players)):
+      self.playerinfo.append([])
+
+    for i in range(len(self.players)):
+      self.playerinfo[i].append(self.players[i])
+      self.playerinfo[i].append(self.players[i].hand)
+    #print(self.playerinfo)
+    return self.playerinfo
+
+  def index(self, player_wanted, info):
+    for i in range(len(info)):
+      player = info[i][0]
+      if str(player_wanted) == str(player):
+        return i
+
+  def surrender_card(self):
+    temp_list1 = []
+    temp_list2 = []
+    counter = 0
+    for i in self.info_player_asked:
+      print(str(i), i.suit)
+      
+      if str(i) != str(self.value_wanted):
+        counter += 1 
+      elif i.suit != str(self.suit_wanted):
+        counter += 1
+      else:
+        temp_list1.append(self.info_player_asked[counter])
+        self.player_turn.addCard(temp_list1[0])
+        
+        for i in range(len(self.info_player_asked)):
+          card = self.info_player_asked.pop()
+          if str(card) != str(self.value_wanted):
+            temp_list2.append(card)
+          elif card.suit != str(self.suit_wanted):
+            temp_list2.append(card)
+
+        for i in range(len(temp_list2)):
+          self.info_player_asked.append(temp_list2[i])
+
+    print(self.player_turn)
+    self.player_turn.showHand()
+    print(self.player_asked)
+    self.player_asked.showHand()
+
+
+  def ask_card(self):
+    self.player_deck_info()
+    player_turn = input(str("What is your name? "))
+    player_asked = input(str("Who would like to ask? "))
+
+    self.value_wanted = int(input("What value would you like? "))
+    self.suit_wanted = str(input("What suit would you like? "))
+
+    self.info_player_turn = self.playerinfo[self.index(player_turn, self.playerinfo)][1]
+    self.info_player_asked = self.playerinfo[self.index(player_asked, self.playerinfo)][1]
+
+    self.player_turn = self.playerinfo[self.index(player_turn, self.playerinfo)][0]
+    self.player_asked = self.playerinfo[self.index(player_asked, self.playerinfo)][0]
+
+    self.surrender_card()
 def question():
   x = input('It is your turn who whould you like to ask? ')
   y = input('what card would you like to ask that player for?')
@@ -217,3 +350,36 @@ def question():
     elif y == 'no':
       print('Go fish')
 question()
+def player_ages(players):
+    playerAge = []
+    for player in players.values():
+        while True:
+            try:
+                age = int(input("Enter {}'s age: ".format(player.name)))
+                playerAge.append((player, age))
+                break
+            except ValueError:
+                print("Please enter a valid age: ")
+    playerAge = sorted(playerAge, key=lambda x: x[1])
+    youngestPlayer = playerAge[0][0]
+    print("{} goes first!\n".format(youngestPlayer.name))
+    return [p for p, _ in playerAge]
+
+def playerTurn(players: list, current_player: str, getCard: bool) -> None:
+  """Determines which player's turn it is
+
+  Args:
+      players (list): list of players in order
+      current_player (str): name of current player
+      getCard (bool): received card from deck
+
+  Returns:
+      None
+  """
+  num_players = len(players)
+  if getCard == False:
+      return current_player
+  else:
+      next_player_index = (players.index(current_player) + 1) % num_players
+      next_player = players[next_player_index]
+      return next_player

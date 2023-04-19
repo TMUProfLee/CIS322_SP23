@@ -1,8 +1,7 @@
 from testing_base import *
 
-# Create a deck to use
+# Create deck and dealer
 deck = Deck()
-# Create a dealer
 dealer = Dealer(deck)
 
 # Create players for your game
@@ -27,10 +26,10 @@ while True:
 players= [Player(name)]
 
 # Deal 5 cards to each player
-dealer.dealCards(5, players)
+dealer.dealCards(5, list(players.values()))
 
 # Show each player's hand
-for player in players:
+for player in players.values():
     print(f'{player.name}:')
     player.showHand(True)
     print()
