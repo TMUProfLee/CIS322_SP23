@@ -83,7 +83,6 @@ def getCard(suit, value):
     if card == my_card:
       return card
   return None
-
 #######################################################################################################################
 class Betting_box:
   def __init__(self, money: int = 0, betters = []):
@@ -131,7 +130,7 @@ class Player:
       print(f"{self.name} has {self.money} dollars. This is not enough to make this bet.")
       return False
     self.money -= amount
-    return self.money, True
+    return self.money
 
   def addCard(self, card: Card, isKnown: bool = True):
     self.hand.append(card)
@@ -140,14 +139,10 @@ class Player:
     else:
       self.knownCards.append(False)
 
-  def handSum(self, hideSum: bool = False):
+  def handSum(self):
     """Sums together the hand and adjusts the sum depending on the best value of an ace (11 or 1)"""
     handsum = 0
     aces = 0
-    if hideSum: # hides the value of the first card when calculating the sum
-      card = self.hand[0]
-      handsum += card.value
-      return handsum
     for card in self.hand:
       if card.value == 11:
         aces += 1
@@ -161,24 +156,18 @@ class Player:
     self.hand = cards
     self.knownCards = [isKnown for _ in self.hand]
 
-  def showHand(self, printShort: bool = False, showBack: bool = False):
+  def showHand(self, printShort: bool = False):
     for idx in range(6):
       for i, card in enumerate(self.hand):
         if printShort and i < len(self.hand)-1:
-          image = card.shortImage[idx] if self.knownCards[i] else card.cardBack[idx]
+          image = card.shortImage[idx]  if self.knownCards[i] else card.cardBack[idx]
           print(image, end="")
-        elif showBack:
-          if i == 1:
-            print(card.cardBack[idx], end="")
-          else:
-            image = card.image[idx]
-            print(image, end="")
         else:
           image = card.image[idx] if self.knownCards[i] else card.cardBack[idx]
           print(image, end="")
       print()
 
-  def pairCheck(self): #returns a list of values that appear at least twice in the players hand
+  def pairCheck(self):#returns a list of values that appear at least twice in the players hand
     pairlist=[]
     aVar1 = 0
     while aVar1 < len(self.hand) - 1:
@@ -267,7 +256,7 @@ class Dealer:
     houseHand = house.handSum()
     
     while houseHand < 17: #force hit when below 17
-      self.dealCards(1, [house])
+      dealer.dealCards(1, [house])
       houseHand = house.handSum()
     
   def bustCheck(self, player):
@@ -290,141 +279,238 @@ class Dealer:
     else:
       return 1 if houseHand <= 21 else 2
 #####################################################################################################################
-def blackjack():
-  """Initializations"""
+"""Initializations"""
+import pygame 
+  
+pygame.init() 
+  
+# screen size
+res = (1080,720) 
+  
+# opens up a window 
+screen = pygame.display.set_mode(res) 
+  
 
-  player_name = input("Username: ")
+color = (255,255,255) 
+color_light = (170,170,170) 
+color_dark = (100,100,100) 
+  
+width = screen.get_width() 
+height = screen.get_height() 
 
-  partition = player_name.find(";")
-  config=""
-  if partition > 0:
-    config = player_name[partition:]
-    player_name = player_name[0:partition]
-  ###
-  deck_num = 1
-  for_money = True
-  early_shuffle = False
-  ###
-  i=0
-  label = ""
-  while i < len(config):
-    if config[i] == ";":
-      label =""
-    else:
-      label = label + config[i]
-    i += 1
-    
-    if label == "free":
-      for_money = False
-    if label == "four":
-      deck_num = 4
-    if label == "shuffle":
-      early_shuffle = True
+#options
+deck_num = 1
+early_shuffle = False
+for_money=True#unused
 
-  deck = Deck(deck_num)
-  deck.shuffle
 
-  dealer = Dealer(deck)
-  player_name = Player(player_name)
-  player_name.addMoney(500)
-  house = Player("house")
+##menu
 
-  betting = True
+smallfont = pygame.font.SysFont('Corbel',35)
 
-  while betting:
+#to add a new button only lines marked with ~~~ must be added
+quit_text = smallfont.render('QUIT' , True , color) #   ~~~
+decks_text = smallfont.render('decks' , True , color)
+play_text = smallfont.render('PLAY' , True , color)
+early_text = smallfont.render('shuffle' , True , color)
+
+buttonlist=[        #[left,up,width,hight,text_offset]
+    [   [480,500,120,35,20],quit_text ],#   ~~~
+    [   [480,350,120,35,20],decks_text ],
+    [   [480,100,120,35,20],play_text ],
+    [   [480,200,120,35,10],early_text ]
+]
+
+
+in_menu=True 
+while in_menu: 
       
-      if for_money:
-        """Player Bet"""
-        if player_name.money == 0:
-          print("You lost all your money gambeling ;( . . . . Come back later when you get more! :)")
-          break
-        bet = int(input("How much would you like to bet? "))
-        while bet == 0:
-          print("You must bet something!")
-          bet = int(input("How much would you like to bet? "))
-        while player_name.makeBet(bet) == False:
-          bet = int(input("\nHow much would you like to bet? "))
-      else:
-        bet=0
+    for ev in pygame.event.get(): 
+          
+        if ev.type == pygame.QUIT: 
+            pygame.quit() 
+              
+        #checks if a mouse is clicked 
+        if ev.type == pygame.MOUSEBUTTONDOWN: 
+              
+            element = buttonlist[0]#first button   ~~~
+            if element[0][0] <= mouse[0] <= element[0][0]+element[0][2] and element[0][1] <= mouse[1] <= element[0][1]+element[0][3]:#   ~~~ 
+                pygame.quit()#   ~~~
+
+            element = buttonlist[1]#second button
+            if element[0][0] <= mouse[0] <= element[0][0]+element[0][2] and element[0][1] <= mouse[1] <= element[0][1]+element[0][3]: 
+                if deck_num==1:
+                    deck_num=2
+                elif deck_num==2:
+                    deck_num=4
+                elif deck_num==4:
+                    deck_num=8
+                elif deck_num==8:
+                    deck_num=1
+
+            element = buttonlist[2]#third button
+            if element[0][0] <= mouse[0] <= element[0][0]+element[0][2] and element[0][1] <= mouse[1] <= element[0][1]+element[0][3]:
+                in_menu=False
+            
+            element = buttonlist[3]#fouth button
+            if element[0][0] <= mouse[0] <= element[0][0]+element[0][2] and element[0][1] <= mouse[1] <= element[0][1]+element[0][3]:
+                if not early_shuffle:
+                    early_shuffle = True
+                else:
+                  early_shuffle = False
+
+    # background color 
+    screen.fill((60,25,60)) 
+      
+    # stores the (x,y) coordinates into 
+    # the variable as a tuple 
+    mouse = pygame.mouse.get_pos() 
+      
+    # if mouse is hovered on a button it changes to a lighter shade 
+    for element in buttonlist:
+        if element[0][0] <= mouse[0] <= element[0][0]+element[0][2] and element[0][1] <= mouse[1] <= element[0][1]+element[0][3]: 
+            pygame.draw.rect(screen,color_light,[element[0][0],element[0][1],element[0][2],element[0][3]]) 
+          
+        else: 
+            pygame.draw.rect(screen,color_dark,[element[0][0],element[0][1],element[0][2],element[0][3]]) 
+      
+        # superimposing the prompt text onto our button 
+        screen.blit(element[1], (element[0][0]+element[0][4],element[0][1])) 
+
+    #button values displayed
+
+    #deck value
+    deckCount = smallfont.render( str(deck_num), True , color)
+    element = buttonlist[1]#second button
+    screen.blit(deckCount, (element[0][0]+element[0][4]+30,element[0][1]+40))
+    #shuffle style
+    if early_shuffle:
+        indeck_limit=52*deck_num//2
+    else:
+        indeck_limit=0
+    earlyValue = smallfont.render( "at: "+str(indeck_limit), True , color)
+    element = buttonlist[3]#fouth button
+    screen.blit(earlyValue, (element[0][0]+element[0][4]+10,element[0][1]+40))
+
+    pygame.display.update() 
+
+##game
+
+screen.fill((60,25,60))
+pygame.display.update()
+player_name = "john"
+
+deck = Deck(deck_num)
+deck.shuffle
+
+dealer = Dealer(deck)
+player_name = Player(player_name)
+player_name.addMoney(500)
+house = Player("house")
+
+betting = True
+
+while betting:
     
-      betting_box = Betting_box(bet, [player_name])
+    if for_money:
+      """Player Bet"""
+      if player_name.money == 0:
+        "You lost all your money gambeling ;( . . . . Come back later when you get more! :)"
+        break
+      bet = int(input("How much would you like to bet? "))
+      while player_name.makeBet(bet) == False:
+        bet = int(input("\nHow much would you like to bet? "))
+    else:
+      bet=0
+  
+    betting_box = Betting_box(bet, [player_name])
 
-      """Give both the house and the player 2 cards to start the game"""
-      dealer.dealCards(2, [player_name, house])
+    """Give both the house and the player 2 cards to start the game"""
+    dealer.dealCards(2, [player_name, house])
+    print("\nYour Hand: ", player_name.handSum())  
+    player_name.showHand()
+    print("\nDealer's Hand: ", house.handSum())
+    house.showHand()
 
-      """check to see if someone has blackjack"""
-      blackjackOutcome = dealer.blackjackChecker(house, player_name)
-      if blackjackOutcome == 1:
-        print("The house has blackjack. You lose!")
-        print("\nDealer's Hand: ", house.handSum(hideSum=True)), house.showHand()
-        betting_box.collect(blackjackOutcome)
-        print(f"You now have ${player_name.money}")
-      elif blackjackOutcome == 2:
-        print("Blackjack! You win!")
-        print("\nYour Hand: ", player_name.handSum()), player_name.showHand()
-        betting_box.collect(blackjackOutcome)
-        print(f"You now have ${player_name.money}")
-      elif blackjackOutcome == 3:
-        print("It's a push! You both have blackjack.")
-        print("\nYour Hand: ", player_name.handSum()), player_name.showHand()
-        print("\nDealer's Hand: ", house.handSum(hideSum=True)), house.showHand(showBack= True)
-        betting_box.collect(blackjackOutcome)
-        print(f"You now have ${player_name.money}")
-        
-      else:
-        
-        """ Print both hands of the player and dealer """
-        print("\nYour Hand: ", player_name.handSum()), player_name.showHand()
-        print("\nDealer's Hand: ", house.handSum(hideSum=True)), house.showHand(showBack= True)
-
-        """while the player doesn't bust, allow them to choose to hit or pass"""
-        bust = False
-        while not bust :
-          hit_stand = input("\nhit or stand? ")
-          if hit_stand == "hit":
-            dealer.dealCards(1,[player_name])
-            print("\nYour Hand: ", player_name.handSum())  
-            player_name.showHand()
-            if dealer.bustCheck(player_name) == True:
-              print("\nBust!")
-              bust = True
-          else:
-            break
-        
-        """After the player is done, let the house complete its turn"""
-        dealer.dealerHand(house)
-        print("\nDealer's Hand: ", house.handSum())
-        if dealer.bustCheck(house) == True:
-          print("\nBust!")
+    """check to see if someone has blackjack"""
+    blackjackOutcome = dealer.blackjackChecker(house, player_name)
+    if blackjackOutcome == 1:
+      print("The house has blackjack. You lose!")
+      betting_box.collect(blackjackOutcome)
+      print(f"You now have ${player_name.money}")
+    elif blackjackOutcome == 2:
+      print("Blackjack! You win!")
+      betting_box.collect(blackjackOutcome)
+      print(f"You now have ${player_name.money}")
+    elif blackjackOutcome == 3:
+      print("It's a push! You both have blackjack.")
+      betting_box.collect(blackjackOutcome)
+      print(f"You now have ${player_name.money}")
+   
+    else:
+    
+#################### DOUBLE DOWN ############################
+      dub_down = input("\nWould you like to double down? (y/n) ")
+      if dub_down == "y":
+        if player_name.money >= int(bet):
+          player_name.money = player_name.money - int(bet)
+          print("\nYou are now betting ",(int(bet)*2)) 
+          betting_box = Betting_box((int(bet) * 2), [player_name])
         else:
-          house.showHand()
-        
-        """Compare house and player's hands to see who wins. Then handle win/loss interaction."""
-        print("\n")
-        winner = dealer.winnnerCheck(house, player_name)
-        if winner == 2:
-          print("You won!")
-          betting_box.collect(winner)
-          print(f"You now have ${player_name.money}")
-        elif winner == 1:
-          print("You lost. The dealer won!")
-          betting_box.collect(winner)
-          print(f"You now have ${player_name.money}")
+          print("You don't have enough money to double down!")
+
+#################### DOUBLE DOWN ############################
+
+      """while the player doesn't bust, allow them to choose to hit or pass"""
+      bust = False
+      while not bust :
+        hit_stand = input("\nhit or stand? ")
+        if hit_stand == "hit":
+          dealer.dealCards(1,[player_name])
+          print("\nYour Hand: ", player_name.handSum())  
+          player_name.showHand()
+          if dealer.bustCheck(player_name) == True:
+            print("\nBust!")
+            bust = True
         else:
-          print("It's a push!")
-          betting_box.collect(winner)
-          print(f"You now have ${player_name.money}")
-
-      """"Clear hands and ask if they want to play again"""
-      print("Cards remaining in deck:", deck.size)
-      start = input("\nWould you like to play again (y/n)? ")
-      if start == "n":
-        betting = False
+          break
+      
+      """After the player is done, let the house complete its turn"""
+      handChangeDetector = house.handSum()
+      dealer.dealerHand(house)
+      print("\nDealer's Hand: ", house.handSum())
+      if dealer.bustCheck(house) == True:
+        print("\nBust!")
+      if house.handSum() == handChangeDetector:
+        pass
       else:
-        house.clearHand()
-        player_name.clearHand()
+        house.showHand()
+      
+      """Compare house and player's hands to see who wins. Then handle win/loss interaction."""
+      print("\n")
+      winner = dealer.winnnerCheck(house, player_name)
+      if winner == 2:
+        print("You won!")
+        betting_box.collect(winner)
+        print(f"You now have ${player_name.money}")
+      elif winner == 1:
+        print("You lost. The dealer won!")
+        betting_box.collect(winner)
+        print(f"You now have ${player_name.money}")
+      else:
+        print("It's a push!")
+        betting_box.collect(winner)
+        print(f"You now have ${player_name.money}")
 
-      if deck.size <=52 and early_shuffle:
-        dealer.resetDeck()
+    """"Clear hands and ask if they want to play again"""
+    print("Cards remaining in deck:", deck.size)
+    start = input("\nWould you like to play again (y/n)? ")
+    if start == "n":
+      betting = False
+    else:
+      house.clearHand()
+      player_name.clearHand()
 
-blackjack()
+    if deck.size <=52*deck_num//2 and early_shuffle:
+      dealer.resetDeck()
+
