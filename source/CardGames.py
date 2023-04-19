@@ -1,6 +1,6 @@
+
 import random
 import os
-import sys
 import time
 import itertools
 
@@ -151,26 +151,15 @@ class Player:
     return False
 
   def showHand(self, printShort: bool = False):
-    add = []
     for idx in range(6):
       for i, card in enumerate(self.hand):
         if printShort and i < len(self.hand)-1:
           image = card.shortImage[idx]  if self.knownCards[i] else card.cardBack[idx]
-          
           print(image, end="")
         else:
           image = card.image[idx] if self.knownCards[i] else card.cardBack[idx]
           print(image, end="")
-       # print(card)
-        if idx == 0:
-          add.append(str(card))
-        if idx == 5:
-          add = list(map(int, add))
-        
       print()
-    return sum(add)
-    
-    
   def High(self):
     l =[]
     l2 =[]
@@ -184,36 +173,28 @@ class Player:
   def clearHand(self):
     self.hand = []
     self.knownCards = []
-  
-  ##MY FUNCTION##
-
-  def printHand(self):
-    list1 = []
-    for i in self.hand:
-      list1.append(str(i))
-    return list(map(int, list1))
-
-  def get_playerHand(self):
-    print()
-
-  def addValues(self):
-    list1 = []
-    #Creates empty list
-    for i in self.hand:
-      #print(i)
-      #gets each value of card that is found in self.hand
-      list1.append(str(i))
-      #appends the value as string to a list
-    integer_list = list(map(int, list1))
-    #converts all strings in list into integer
-    return sum(integer_list)
+  def printCardsIfSet(self):
+    # Check for a set of four cards with the same value
+    value_counts = {}
+    for card in self.hand:
+      if card.value not in value_counts:
+        value_counts[card.value] = 1
+      else:
+        value_counts[card.value] += 1
+      if value_counts[card.value] == 4:
+        print("You have a set of four %s's!" % card.value)
+        print("Would you like to print your hand? (Y/N)")
+        choice = input().lower()
+        if choice == 'y':
+          self.showHand()
+        return
 
 class Dealer:
   def __init__(self, deck: Deck):
     self.deck = deck
     self.deck.shuffle()
 
-  def printCards(self, cards: "list[Card]", showFront: bool, printShort: bool = True):
+  def printCards(self, cards: "list[Player]", showFront: bool, printShort: bool = True):
     for idx in range(6):
       for i, card in enumerate(cards):
         if printShort and i < len(cards)-1:
@@ -223,7 +204,6 @@ class Dealer:
           image = card.image[idx] if showFront else card.cardBack[idx]
           print(image, end="")
       print()
-
   def dealCards(self, numCards: int, players: "list[Player]"):
     if numCards * len(players) > self.deck.size:
       return False
@@ -322,6 +302,16 @@ class GoFish:
     self.player_asked = self.playerinfo[self.index(player_asked, self.playerinfo)][0]
 
     self.surrender_card()
+  def count_cards(self, deck):
+    # How many cards are in the deck assigned to "num_cards"
+    num_cards = len(deck)
+    # For each iteration the number of cards in the deck decrease by 1 card
+    for i in range(num_cards):
+        print("There are "+ str(num_cards - i) +" more cards in the deck")
+    # When the deck reaches 0, then the game is over
+    if num_cards == 0:
+        print("The deck is now empty. Game over, Thanks for playing!")
+
 def question():
   x = input('It is your turn who whould you like to ask? ')
   y = input('what card would you like to ask that player for?')
