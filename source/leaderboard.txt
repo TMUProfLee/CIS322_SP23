@@ -1,4 +1,4 @@
-Donovan:13
-Jonny:7
-Roy:17
-Jesse:9
+Donovan:9
+Jonny:8
+Roy:8
+Jesse:5
