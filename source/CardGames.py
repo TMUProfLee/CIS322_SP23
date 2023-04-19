@@ -542,6 +542,7 @@ while betting:
         pygame.display.update()
 
     bet = int(wager)
+    player_name.makeBet(bet)
     betting_box = Betting_box(bet, [player_name])
 
     """Give both the house and the player 2 cards to start the game"""
