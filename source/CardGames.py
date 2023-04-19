@@ -1,5 +1,6 @@
 import random
 import os
+from Utilities import checkDuplicate
 
 cardImages = []
 values = [11,2,3,4,5,6,7,8,9,10,10,10,10]
@@ -238,7 +239,18 @@ def initializeGame():
     anotherPlayer = input("Add another player? (Y/N): ")
     if anotherPlayer == "Y" or anotherPlayer == "y":
       newPlayer = input("Enter name of new player: ")
-      playerNames.append(newPlayer)
+      while checkDuplicate(newPlayer) == True:
+        useExisting = input(f"Player name already exists. Continue as {newPlayer}? (Y/N): ")
+        if useExisting == "Y" or useExisting == "y":
+          playerNames.append(newPlayer)
+          break
+        else:
+          newName = input("Please enter new player name: ")
+          while checkDuplicate(newName) == True:
+            newName = input("Player name already exists. Please enter new name: ")
+            checkDuplicate(newName)
+          playerNames.append(newName)
+          break
       print()
     else:
       morePlayers = False
@@ -253,7 +265,7 @@ def initializeGame():
 
   def resetPot(self):
     self.money = 0
-
+          
 def Play(dealer: Dealer, players: list, pot: Pot):
   #Players make bets after they are dealt their cards
   print("===========================\nSTART BETS\n===========================")
