@@ -1,11 +1,12 @@
 import os
-curdir = os.path.join(os.curdir, '..')
+curdir = os.curdir
 
 while 'source' not in os.listdir(curdir):
     curdir = os.path.join(curdir, '..')
-root_dir = curdir
+root_dir = os.path.abspath(curdir)
 
 def checkDuplicate(newPlayer):
+  print(root_dir)
   with open(f"{root_dir}/source/leaderboard.txt", 'r') as file:
       lines = file.readlines()
       for line in lines:
