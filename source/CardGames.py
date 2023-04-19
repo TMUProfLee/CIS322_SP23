@@ -302,6 +302,16 @@ class GoFish:
     self.player_asked = self.playerinfo[self.index(player_asked, self.playerinfo)][0]
 
     self.surrender_card()
+  def count_cards(self, deck):
+    # How many cards are in the deck assigned to "num_cards"
+    num_cards = len(deck)
+    # For each iteration the number of cards in the deck decrease by 1 card
+    for i in range(num_cards):
+        print("There are "+ str(num_cards - i) +" more cards in the deck")
+    # When the deck reaches 0, then the game is over
+    if num_cards == 0:
+        print("The deck is now empty. Game over, Thanks for playing!")
+
 def question():
   x = input('It is your turn who whould you like to ask? ')
   y = input('what card would you like to ask that player for?')
