@@ -329,10 +329,15 @@ def updateLeaderboard(player):
 def showLeaderboard():
     with open(leaderboard_file, 'r') as file:
         leaderboard = file.readlines()
+    leaderboard = [line.strip().split(':') for line in leaderboard]
+    leaderboard = sorted(leaderboard, key=lambda x: int(x[1]), reverse=True)
     print('\nLEADERBOARD:')
-    for line in leaderboard:
-        print(line.strip())
+    for player, wins in leaderboard:
+      print(f'{player}: {wins} wins')
 
+
+   
 params = initializeGame()
 updateLeaderboard(showWinner(Play(params[0], params[1], params[2])).name)
-showLeaderboard(wins)
+showLeaderboard()
+
