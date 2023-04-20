@@ -548,4 +548,4 @@ def blackjackGame():
         if bj.restartGame(house, player_name, dealer, deck, early_shuffle) == False:
           break
 
-#blackjackGame()
+blackjackGame()
