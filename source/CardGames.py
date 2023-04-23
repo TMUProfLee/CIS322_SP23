@@ -693,35 +693,12 @@ while betting:
         pygame.display.update()
         wait()
 
-    """"Clear hands and ask if they want to play again"""
+    """"Clear hands"""
     print("Cards remaining in deck:", deck.size)
-  
-    screen.fill(background)
-    resultText = smallfont.render( "enter to continue. space to quit", True , color)
-    screen.blit(resultText, (160,300))
-    walletText = smallfont.render("reserve: $"+str(player_name.money),True, color)
-    screen.blit(walletText, (12,6))
-    pygame.display.update()
 
-    waiting = True
-    while waiting:
-      for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-          pygame.quit()
-            
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-              start = "n"
-              waiting = False
-            if event.key == pygame.K_RETURN:
-              start = "y"
-              waiting = False
 
-    if start == "n":
-      betting = False
-    else:
-      house.clearHand()
-      player_name.clearHand()
+    house.clearHand()
+    player_name.clearHand()
 
     if deck.size <=52*deck_num//2 and early_shuffle:
       dealer.resetDeck()
