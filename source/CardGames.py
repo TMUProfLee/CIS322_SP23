@@ -363,7 +363,6 @@ def wait():
 def handsDisplay(hidden=True):
     #house cards
     if not hidden:
-      print("not hidden")
       x= 505 - 45*len(house.cardImages())
       for acard in house.cardImages():
         screen.blit(acard,(x,120))
@@ -561,10 +560,10 @@ while betting:
       print(f"You now have ${player_name.money}")
 
       screen.fill((background))
-      handsDisplay()#blits the cards to the screen
+      handsDisplay(False)#blits the cards to the screen
       lwp = smallfont.render( "The house has blackjack. You lose!", True , color)
       screen.blit(lwp, (300,320))
-      screen.blit(promptText, (350,400))
+      screen.blit(promptText, (350,385))
       walletText = smallfont.render("reserve: $"+str(player_name.money),True, color)
       screen.blit(walletText, (12,6))
       pygame.display.update()
@@ -576,10 +575,10 @@ while betting:
       print(f"You now have ${player_name.money}")
 
       screen.fill((background))
-      handsDisplay()#blits the cards to the screen
+      handsDisplay(False)#blits the cards to the screen
       lwp = smallfont.render( "Blackjack! You win!", True , color)
       screen.blit(lwp, (340,320))
-      screen.blit(promptText, (350,400))
+      screen.blit(promptText, (350,385))
       walletText = smallfont.render("reserve: $"+str(player_name.money),True, color)
       screen.blit(walletText, (12,6))
       pygame.display.update()
@@ -591,10 +590,10 @@ while betting:
       print(f"You now have ${player_name.money}")
       
       screen.fill((background))
-      handsDisplay()#blits the cards to the screen
+      handsDisplay(False)#blits the cards to the screen
       lwp = smallfont.render( "It's a push! You both have blackjack.", True , color)
       screen.blit(lwp, (240,320))
-      screen.blit(promptText, (350,400))
+      screen.blit(promptText, (350,385))
       walletText = smallfont.render("reserve: $"+str(player_name.money),True, color)
       screen.blit(walletText, (12,6))
       pygame.display.update()
