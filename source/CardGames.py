@@ -527,7 +527,8 @@ while betting:
               if wager == "":
                 wager = "0"
             elif event.key == pygame.K_RETURN:
-              asking_for_bet = False
+              if int(wager) <= player_name.money:
+                asking_for_bet = False
             elif event.unicode.isdigit() :
               if wager == "0":
                 wager = wager[:-1]
