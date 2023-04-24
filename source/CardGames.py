@@ -361,4 +361,17 @@ def question():
       print('player has card')
     elif y == 'no':
       print('Go fish')
-question()
+
+def nextPlayer(players: list, current_player, drawCard):
+    #creates an array out of players. 
+    num_players = len(players)
+    index = players.index(current_player)
+    if drawCard:
+        #if a card is drawn the turn goes to the next player in the array. 
+        next_player = (index + 1) % num_players
+        return players[next_player]
+    else:
+        #if a card isn't drawn the player goes again. 
+        return current_player
+    
+
