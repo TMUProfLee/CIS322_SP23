@@ -1,6 +1,6 @@
+
 import random
 import os
-import sys
 import time
 import itertools
 
@@ -151,26 +151,15 @@ class Player:
     return False
 
   def showHand(self, printShort: bool = False):
-    add = []
     for idx in range(6):
       for i, card in enumerate(self.hand):
         if printShort and i < len(self.hand)-1:
           image = card.shortImage[idx]  if self.knownCards[i] else card.cardBack[idx]
-          
           print(image, end="")
         else:
           image = card.image[idx] if self.knownCards[i] else card.cardBack[idx]
           print(image, end="")
-       # print(card)
-        if idx == 0:
-          add.append(str(card))
-        if idx == 5:
-          add = list(map(int, add))
-        
       print()
-    return sum(add)
-    
-    
   def High(self):
     l =[]
     l2 =[]
@@ -222,7 +211,7 @@ class Dealer:
     self.deck = deck
     self.deck.shuffle()
 
-  def printCards(self, cards: "list[Card]", showFront: bool, printShort: bool = True):
+  def printCards(self, cards: "list[Player]", showFront: bool, printShort: bool = True):
     for idx in range(6):
       for i, card in enumerate(cards):
         if printShort and i < len(cards)-1:
@@ -232,7 +221,6 @@ class Dealer:
           image = card.image[idx] if showFront else card.cardBack[idx]
           print(image, end="")
       print()
-
   def dealCards(self, numCards: int, players: "list[Player]"):
     if numCards * len(players) > self.deck.size:
       return False
