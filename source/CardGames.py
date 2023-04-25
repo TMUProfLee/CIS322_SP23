@@ -243,9 +243,9 @@ class Dealer:
         player.showHand(True)
         print() 
 class GoFish:
-  def __init__(self, players: "list[Player]"):
+  def __init__(self):
     self.playerinfo = []
-    self.players = players
+    self.players = []
     self.value_wanted = int
     self.suit_wanted = ""
     self.player_asked = ""
@@ -253,11 +253,78 @@ class GoFish:
     self.info_player_turn = int
     self.info_player_asked = int
 
+  def multiplayer_info(self):
+    #for print statements and centering
+    width = os.get_terminal_size().columns
+    confirm_value = True
+
+    print()
+    print("*-"*(width//2))
+
+    #ask total num players
+    player_num = {}
+    num_players = int(input("How many players? "))
+    print()
+    print("%d players selected" %num_players, "\n")
+
+    #confirm input 
+    while confirm_value:
+      confirm = input("is this correct? Y/N: ")
+
+      if confirm == "n":
+        num_players = int(input("How many players? "))
+
+      elif confirm == "y":
+        confirm_value = False
+
+      else:
+        #if user chooses anything other than Y?N
+        print("\n[Please input Y/N]\n")
+        
+    #makes player object with their name
+    for i in range(1, num_players+1):
+      print()
+      player = input("Player %d What is your name? " %i)
+      self.players.append(Player(player))
+
+    print()
+    print("*-"*(width//2))
+    print("[ TOTAL NUMBER OF PLAYERS ]".center(width))
+    print(str(num_players).center(width))
+
+    #adds number, player to dictionary (ex: 1, Keren) 
+    #Keren is player 1 
+    for counter, player in enumerate((self.players), start =1):
+      print("PLAYER %d: " % counter, player)
+      player_num[counter] = player
+    print()
+    return player_num
+      
+  #player score will be shown here
+  def point_tracker_interface(self, info):
+    width = os.get_terminal_size().columns
+    score = 0
+
+    print("*-"*(width//2))
+    
+    print("[ PLAYER SCORES ]".center(width))
+    for num, player in info.items():
+      print(("{0}: {1}".center(width)).format(player, score))
+
+    print()
+    print("*-"*(width//2))
+
+
+
   def start_game(self):
+    player_number = self.multiplayer_info()
+    self.point_tracker_interface(player_number)
+
     deck = Deck()
     dealer = Dealer(deck)
     dealer.dealCards(5, self.players)
     for player in self.players:
+      print("\n",player)
       player.showHand(player.hand)
     
   def player_deck_info(self):
@@ -369,7 +436,7 @@ def question():
       print('player has card')
     elif y == 'no':
       print('Go fish')
-question()
+
 def player_ages(players):
     playerAge = []
     for player in players.values():
