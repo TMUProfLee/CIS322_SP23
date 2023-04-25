@@ -14,7 +14,26 @@ def find_root_dir():
     os.chdir('..')
     cwd = os.path.join( cwd, '..')
   return cwd
+def startUp():
+  print("****************************************")
+  print("*                                      *")
+  print("*          Go Fish Card Game           *")
+  print("*                                      *")
+  print("* Developed by Keren,Peter,Andre,Zack  *")
+  print("*             and Robert               *")
+  print("****************************************")
+  print("")
+  print("Instructions:")
+  print("2. Each player is dealt 7 cards at the beginning of the game.")
+  print("3. The remaining cards are placed in a draw pile.")
+  print("4. Players take turns asking each other for cards.")
+  print("5. If a player has the requested card, they must give it to the requesting player.")
+  print("6. If a player does not have the requested card, they must tell the requesting player to 'Go Fish'.")
+  print("7. If the card pile runs out, the game is over.")
+  print("8. The player with the most sets of 4 cards at the end of the game wins.")
 
+  # Wait for user input
+  input("Press Enter to start the game...")
 class Card:
   def __init__(self, suit, value, image, cardBack):
     self.cardBack = cardBack
