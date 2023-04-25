@@ -200,6 +200,22 @@ class Player:
       list1.append(str(i))
     integer_list = list(map(int, list1))
     return sum(integer_list)
+  
+  def printCardsIfSet(self):
+    # Check for a set of four cards with the same value
+    value_counts = {}
+    for card in self.hand:
+      if card.value not in value_counts:
+        value_counts[card.value] = 1
+      else:
+        value_counts[card.value] += 1
+      if value_counts[card.value] == 4:
+        print("You have a set of four %s's!" % card.value)
+        print("Would you like to print your hand? (Y/N)")
+        choice = input().lower()
+        if choice == 'y':
+          self.showHand()
+        return
 
 class Dealer:
   def __init__(self, deck: Deck):
@@ -228,6 +244,7 @@ class Dealer:
   def resetDeck(self):
     self.deck.reset()
     self.deck.shuffle()
+  
 
   def printHands(self, players: dict):
     # Show each player's hand
