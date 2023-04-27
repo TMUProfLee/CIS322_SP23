@@ -366,9 +366,9 @@ def cardCountIni(playerHand, totalCard, deckSize):
 def cardCount(player, totalCard, deckSize):
   count = 0
   card = player.hand[-1]
-  if card in [2,3,4,5,6]:
+  if card.value in [2,3,4,5,6]:
     count = 1
-  elif card in [1,10,11]:
+  elif card.value in [1,10,11]:
     count = -1
   totalCard.append(count)
   runningCount = sum(totalCard)
