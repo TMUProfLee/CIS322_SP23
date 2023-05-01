@@ -502,12 +502,27 @@ player_name = Player(player_name)
 player_name.addMoney(500)
 house = Player("house")
 
+high_score = 0
 
 promptText = smallfont.render( "Press/Click to continue.", True , color)
 betting = True
 while betting:
-
+    """check high score every round"""
+    with open("highscore.txt", "r") as hisc:
+      stored_val = hisc.read()
+      high_score = int(stored_val) if stored_val else 0
+    with open("highscore.txt", "w") as hisc:
+      if player_name.money > high_score:
+        hisc.write(str(int(float(player_name.money))))
+        high_score = int(float(player_name.money))
+        print("NEW HIGHSCORE!")
+      else:
+        hisc.write(str(high_score))
+    print("CURRENT HIGHSCORE =",high_score)
+  
+  
     """Player Bet"""
+    
     if player_name.money == 0:
         "You lost all your money gambeling ;( . . . . Come back later when you get more! :)"
         break
