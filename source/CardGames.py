@@ -508,13 +508,16 @@ promptText = smallfont.render( "Press/Click to continue.", True , color)
 betting = True
 while betting:
     """check high score every round"""
+    #read high score
     with open("highscore.txt", "r") as hisc:
       stored_val = hisc.read()
-      high_score = int(stored_val) if stored_val else 0
+      high_score = int(float(stored_val)) if stored_val else 0
+    #write high score
     with open("highscore.txt", "w") as hisc:
+      #compare high score
       if player_name.money > high_score:
-        hisc.write(str(int(float(player_name.money))))
-        high_score = int(float(player_name.money))
+        hisc.write(str(player_name.money))
+        high_score = player_name.money
         print("NEW HIGHSCORE!")
       else:
         hisc.write(str(high_score))
