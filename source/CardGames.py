@@ -214,7 +214,6 @@ class Player:
       aces -= 1
       handsum -= 10
     return handsum
-
   def setHand(self, cards: "list[Card]", isKnown: bool = False):
     self.hand = cards
     self.knownCards = [isKnown for _ in self.hand]
@@ -324,6 +323,7 @@ class Dealer:
     
     while houseHand < 17: #force hit when below 17
       dealer.dealCards(1, [house])
+      cardCount(house, totalCard, deck.size) # add new card into card counting list
       houseHand = house.handSum()
     
   def bustCheck(self, player):
@@ -345,7 +345,42 @@ class Dealer:
     
     else:
       return 1 if houseHand <= 21 else 2
+# add the inital cards (4 cards - 1 face down card) to card count list at the beginning of every turn
+# input: the person hand list, totalCard list, and deck.size
+# output: 2 elements list of running count and true count value
+def cardCountIni(playerHand, totalCard, deckSize):
+  for card in playerHand:
+    count = 0
+    if card.value in [2,3,4,5,6]:
+      count = 1
+    elif card.value in [1,10,11]:
+      count = -1
+    totalCard.append(count)
+  runningCount = sum(totalCard)
+  trueCount = runningCount / (deckSize/52)
+  return [runningCount, trueCount]
 
+# add new card to card count list
+# input: the person hand list, totalCard list, and deck.size
+# output: 2 elements list of running count and true count value
+def cardCount(player, totalCard, deckSize):
+  count = 0
+  card = player.hand[-1]
+  if card.value in [2,3,4,5,6]:
+    count = 1
+  elif card.value in [1,10,11]:
+    count = -1
+  totalCard.append(count)
+  runningCount = sum(totalCard)
+  trueCount = runningCount / (deckSize/52)
+  return [runningCount, trueCount]
+# the terminal output of current card count
+# input: totalCard list and [runningCount, trueCount]
+def printCardCount(totalCard, cardCount):
+  print("Card counting value")
+  print(totalCard)
+  print("running count: " + str(cardCount[0]))
+  print("true count: " + str(cardCount[1]))
 def wait():
   waiting = False
   while not waiting:#makes certain the user has let go of the button
@@ -503,6 +538,7 @@ player_name.addMoney(500)
 house = Player("house")
 
 high_score = 0
+totalCard = []
 
 promptText = smallfont.render( "Press/Click to continue.", True , color)
 betting = True
@@ -532,6 +568,7 @@ while betting:
 
     wager="0"
     asking_for_bet =True
+    print("suggest bet = (true count - 1) * betting unit")
     while asking_for_bet:
       for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -569,6 +606,11 @@ while betting:
     player_name.showHand()
     print("\nDealer's Hand: ", house.handSum())
     house.showHand()
+
+    #add the initial cards card counting array and print
+    cardCountIni(player_name.hand, totalCard, deck.size)
+    printCardCount(totalCard, cardCountIni(house.hand[:-1], totalCard, deck.size))
+
 
     """check to see if someone has blackjack"""
     blackjackOutcome = dealer.blackjackChecker(house, player_name)
@@ -645,6 +687,8 @@ while betting:
           dealer.dealCards(1,[player_name])
           print("\nYour Hand: ", player_name.handSum())
           player_name.showHand()
+          #add card value and print card count
+          printCardCount(totalCard, cardCount(player_name, totalCard, deck.size))
 
           if dealer.bustCheck(player_name) == True:
             print("\nBust!")
@@ -666,6 +710,8 @@ while betting:
       
       """Compare house and player's hands to see who wins. Then handle win/loss interaction."""
       print("\n")
+      #add the facedown card into the count
+      printCardCount(totalCard, cardCountIni(house.hand[:1], totalCard, deck.size))      
       winner = dealer.winnnerCheck(house, player_name)
       if winner == 2:
         print("You won!")
@@ -719,3 +765,4 @@ while betting:
 
     if deck.size <=52*deck_num//2 and early_shuffle:
       dealer.resetDeck()
+      totalCard = [] #reset the card count pile
