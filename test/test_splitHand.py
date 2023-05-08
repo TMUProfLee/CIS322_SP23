@@ -56,6 +56,43 @@ class BlackJack:
       house.clearHand()
       player_name.clearHand()
 
+class BlackJack:
+  
+  def blackjackDecider(self, house, player_name, betting_box, dealer, silent: bool=False):
+    blackjackOutcome = dealer.blackjackChecker(house, player_name)
+    if blackjackOutcome == 1 and silent == False:
+      print("The house has blackjack. You lose!")
+      print("\nDealer's Hand: ", house.handSum()), house.showHand()
+      betting_box.collect(blackjackOutcome)
+      print(f"You now have ${player_name.money}")
+      return True
+    elif blackjackOutcome == 2 and silent == False:
+      print("Blackjack! You win!")
+      print("\nYour Hand: ", player_name.handSum()), player_name.showHand()
+      betting_box.collect(blackjackOutcome)
+      print(f"You now have ${player_name.money}")
+      return True
+    elif blackjackOutcome == 3 and silent == False:
+      print("It's a push! You both have blackjack.")
+      print("\nYour Hand: ", player_name.handSum()), player_name.showHand()
+      print("\nDealer's Hand: ", house.handSum(hideSum=True)), house.showHand(showBack= True)
+      betting_box.collect(blackjackOutcome)
+      print(f"You now have ${player_name.money}")
+      return True
+    elif blackjackOutcome == 2:
+      print("This hand is blackjack!")
+      return True
+
+  def restartGame(self, house, player_name, dealer, deck, early_shuffle):
+    print("Cards remaining in deck:", deck.size)
+    start = input("\nWould you like to play again (y/n)? ")
+    if start == "n":
+      betting = False
+      return betting
+    else:
+      house.clearHand()
+      player_name.clearHand()
+
     if deck.size <=52 and early_shuffle:
       dealer.resetDeck()
 
@@ -152,7 +189,7 @@ class BlackJack:
         playerORdealer = "your next"
       else:
         playerORdealer = "the dealer's"
-
+        
       phrase = (f"Getting {playerORdealer} hand")
 
       for letter in phrase:
@@ -162,7 +199,125 @@ class BlackJack:
         print(" .",end="", flush=True), time.sleep(.1)
       print()
 #####################################################################################################################
+"""Pygame Initializations"""
+import pygame 
+  
+pygame.init() 
+  
+# screen size
+res = (1080,720) 
+  
+# opens up a window 
+screen = pygame.display.set_mode(res) 
+  
+
+color = (255,255,255) 
+color_light = (170,170,170) 
+color_dark = (100,100,100) 
+  
+width = screen.get_width() 
+height = screen.get_height() 
+
+#options
+deck_num = 1
+early_shuffle = False
+for_money=True#unused
+
+
+##menu
+
+smallfont = pygame.font.SysFont('Corbel',35)
+
+#to add a new button only lines marked with ~~~ must be added
+quit_text = smallfont.render('QUIT' , True , color) #   ~~~
+decks_text = smallfont.render('decks' , True , color)
+play_text = smallfont.render('PLAY' , True , color)
+early_text = smallfont.render('shuffle' , True , color)
+
+buttonlist=[        #[left,up,width,hight,text_offset]
+    [   [480,500,120,35,20],quit_text ],#   ~~~
+    [   [480,350,120,35,20],decks_text ],
+    [   [480,100,120,35,20],play_text ],
+    [   [480,200,120,35,10],early_text ]
+]
+
+
+in_menu=True 
+while in_menu: 
+      
+    for ev in pygame.event.get(): 
+          
+        if ev.type == pygame.QUIT: 
+            pygame.quit() 
+              
+        #checks if a mouse is clicked 
+        if ev.type == pygame.MOUSEBUTTONDOWN: 
+              
+            element = buttonlist[0]#first button   ~~~
+            if element[0][0] <= mouse[0] <= element[0][0]+element[0][2] and element[0][1] <= mouse[1] <= element[0][1]+element[0][3]:#   ~~~ 
+                pygame.quit()#   ~~~
+
+            element = buttonlist[1]#second button
+            if element[0][0] <= mouse[0] <= element[0][0]+element[0][2] and element[0][1] <= mouse[1] <= element[0][1]+element[0][3]: 
+                if deck_num==1:
+                    deck_num=2
+                elif deck_num==2:
+                    deck_num=4
+                elif deck_num==4:
+                    deck_num=8
+                elif deck_num==8:
+                    deck_num=1
+
+            element = buttonlist[2]#third button
+            if element[0][0] <= mouse[0] <= element[0][0]+element[0][2] and element[0][1] <= mouse[1] <= element[0][1]+element[0][3]:
+                in_menu=False
+            
+            element = buttonlist[3]#fouth button
+            if element[0][0] <= mouse[0] <= element[0][0]+element[0][2] and element[0][1] <= mouse[1] <= element[0][1]+element[0][3]:
+                if not early_shuffle:
+                    early_shuffle = True
+                else:
+                  early_shuffle = False
+
+    # background color 
+    screen.fill((60,25,60)) 
+      
+    # stores the (x,y) coordinates into 
+    # the variable as a tuple 
+    mouse = pygame.mouse.get_pos() 
+      
+    # if mouse is hovered on a button it changes to a lighter shade 
+    for element in buttonlist:
+        if element[0][0] <= mouse[0] <= element[0][0]+element[0][2] and element[0][1] <= mouse[1] <= element[0][1]+element[0][3]: 
+            pygame.draw.rect(screen,color_light,[element[0][0],element[0][1],element[0][2],element[0][3]]) 
+          
+        else: 
+            pygame.draw.rect(screen,color_dark,[element[0][0],element[0][1],element[0][2],element[0][3]]) 
+      
+        # superimposing the prompt text onto our button 
+        screen.blit(element[1], (element[0][0]+element[0][4],element[0][1])) 
+
+    #button values displayed
+
+    #deck value
+    deckCount = smallfont.render( str(deck_num), True , color)
+    element = buttonlist[1]#second button
+    screen.blit(deckCount, (element[0][0]+element[0][4]+30,element[0][1]+40))
+    #shuffle style
+    if early_shuffle:
+        indeck_limit=52*deck_num//2
+    else:
+        indeck_limit=0
+    earlyValue = smallfont.render( "at: "+str(indeck_limit), True , color)
+    element = buttonlist[3]#fouth button
+    screen.blit(earlyValue, (element[0][0]+element[0][4]+10,element[0][1]+40))
+
+    pygame.display.update() 
+#####################################################################################################################
 def blackjackGame():
+  """Pygame initialization"""
+  screen.fill((60,25,60))
+  pygame.display.update()
   """blackjack Class initialization"""
   bj = BlackJack()
 
@@ -183,6 +338,7 @@ def blackjackGame():
   ####"""Game Loop"""####
   betting = True
   while betting:
+
     hand_num = 1 # at the top of the loop, we are always looking at hand number 1
 
     """This catches and disrupts the normal game loop if the player is in the middle of playing their split hands"""
@@ -228,14 +384,13 @@ def blackjackGame():
       """handle Player betting"""
       bet = bj.playerBet(player_name, for_money)
       if bet == "no money":
-        break
+        break 
       else:
         betting_box = Betting_box(bet, [player_name])
                 
       """Give both the house and the player 2 cards to start the game"""
-      dealer.dealCards(2, [house])
-      player_name.addCard(five_spades)
-      player_name.addCard(five_spades)
+      dealer.dealCards(2, [player_name, house])
+      
       """check to see if someone has blackjack"""
       if bj.blackjackDecider(house, player_name, betting_box, dealer) == True:
         pass
@@ -264,4 +419,3 @@ def blackjackGame():
           break
 
 blackjackGame()
-
