@@ -83,6 +83,7 @@ def getCard(suit, value):
     if card == my_card:
       return card
   return None
+
 #######################################################################################################################
 class Betting_box:
   def __init__(self, money: int = 0, betters = []):
@@ -130,7 +131,7 @@ class Player:
       print(f"{self.name} has {self.money} dollars. This is not enough to make this bet.")
       return False
     self.money -= amount
-    return self.money
+    return self.money, True
 
   def addCard(self, card: Card, isKnown: bool = True):
     self.hand.append(card)
@@ -139,10 +140,14 @@ class Player:
     else:
       self.knownCards.append(False)
 
-  def handSum(self):
+  def handSum(self, hideSum: bool = False):
     """Sums together the hand and adjusts the sum depending on the best value of an ace (11 or 1)"""
     handsum = 0
     aces = 0
+    if hideSum: # hides the value of the first card when calculating the sum
+      card = self.hand[0]
+      handsum += card.value
+      return handsum
     for card in self.hand:
       if card.value == 11:
         aces += 1
@@ -156,18 +161,24 @@ class Player:
     self.hand = cards
     self.knownCards = [isKnown for _ in self.hand]
 
-  def showHand(self, printShort: bool = False):
+  def showHand(self, printShort: bool = False, showBack: bool = False):
     for idx in range(6):
       for i, card in enumerate(self.hand):
         if printShort and i < len(self.hand)-1:
-          image = card.shortImage[idx]  if self.knownCards[i] else card.cardBack[idx]
+          image = card.shortImage[idx] if self.knownCards[i] else card.cardBack[idx]
           print(image, end="")
+        elif showBack:
+          if i == 1:
+            print(card.cardBack[idx], end="")
+          else:
+            image = card.image[idx]
+            print(image, end="")
         else:
           image = card.image[idx] if self.knownCards[i] else card.cardBack[idx]
           print(image, end="")
       print()
 
-  def pairCheck(self):#returns a list of values that appear at least twice in the players hand
+  def pairCheck(self): #returns a list of values that appear at least twice in the players hand
     pairlist=[]
     aVar1 = 0
     while aVar1 < len(self.hand) - 1:
@@ -256,7 +267,7 @@ class Dealer:
     houseHand = house.handSum()
     
     while houseHand < 17: #force hit when below 17
-      dealer.dealCards(1, [house])
+      self.dealCards(1, [house])
       houseHand = house.handSum()
     
   def bustCheck(self, player):
@@ -279,7 +290,7 @@ class Dealer:
     else:
       return 1 if houseHand <= 21 else 2
 #####################################################################################################################
-"""Initializations"""
+"""Pygame Initializations"""
 import pygame 
   
 pygame.init() 
@@ -396,7 +407,7 @@ while in_menu:
 
 ##game
 
-def main():
+def blackjack():
   screen.fill((60,25,60))
   pygame.display.update()
   player_name = "john"
@@ -412,15 +423,16 @@ def main():
   betting = True
 
   while betting:
-      
       if for_money:
         """Player Bet"""
         if player_name.money == 0:
-          "You lost all your money gambeling ;( . . . . Come back later when you get more! :)"
+          print("You lost all your money gambeling ;( . . . . Come back later when you get more! :)")
           break
         bet = int(input("How much would you like to bet? "))
-        while player_name.makeBet(bet) == False:
-          bet = int(input("\nHow much would you like to bet? "))
+        while bet == 0:
+          print("You must bet something!")
+          bet = int(input("How much would you like to bet? "))
+         
       else:
         bet=0
     
@@ -433,22 +445,33 @@ def main():
       print("\nDealer's Hand: ", house.handSum())
       house.showHand()
 
+
       """check to see if someone has blackjack"""
       blackjackOutcome = dealer.blackjackChecker(house, player_name)
       if blackjackOutcome == 1:
         print("The house has blackjack. You lose!")
+        print("\nDealer's Hand: ", house.handSum(hideSum=True)), house.showHand()
         betting_box.collect(blackjackOutcome)
         print(f"You now have ${player_name.money}")
       elif blackjackOutcome == 2:
         print("Blackjack! You win!")
+        print("\nYour Hand: ", player_name.handSum()), player_name.showHand()
         betting_box.collect(blackjackOutcome)
         print(f"You now have ${player_name.money}")
       elif blackjackOutcome == 3:
         print("It's a push! You both have blackjack.")
+        print("\nYour Hand: ", player_name.handSum()), player_name.showHand()
+        print("\nDealer's Hand: ", house.handSum(hideSum=True)), house.showHand(showBack=True)
         betting_box.collect(blackjackOutcome)
         print(f"You now have ${player_name.money}")
         
       else:
+      
+        """ Print both hands of the player and dealer """
+        print("\nYour Hand: ", player_name.handSum()), player_name.showHand()
+        print("\nDealer's Hand: ", house.handSum(hideSum=True)), house.showHand(showBack= True)
+
+
         """while the player doesn't bust, allow them to choose to hit or pass"""
         bust = False
         while not bust :
@@ -469,10 +492,9 @@ def main():
         print("\nDealer's Hand: ", house.handSum())
         if dealer.bustCheck(house) == True:
           print("\nBust!")
+          
         if house.handSum() == handChangeDetector:
           pass
-        else:
-          house.showHand()
         
         """Compare house and player's hands to see who wins. Then handle win/loss interaction."""
         print("\n")
@@ -501,6 +523,5 @@ def main():
 
       if deck.size <=52*deck_num//2 and early_shuffle:
         dealer.resetDeck()
+blackjack()
 
-if __name__ == '__main__':
-  main()
